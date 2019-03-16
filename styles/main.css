@@ -4,16 +4,37 @@
 }
 
 body {
-  padding: 2vh 10vw 2vh 10vw;
+  padding: 120px 10vw 2vh 10vw;
+}
+
+header {
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100px;
+  text-align: center;
+  width: 100vw;
+  /*background-color: red;*/
+  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(orange));
+  background-image: linear-gradient(red, orange);
+  -webkit-box-shadow: 4px 0 10px orange;
+          box-shadow: 4px 0 10px orange;
+}
+
+header h1 {
+  margin-top: 50px;
+  color: white;
+  font-size: 20pt;
 }
 
 #items {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
@@ -25,6 +46,8 @@ body {
   bottom: 0;
   left: 0;
   background-color: red;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(orange), to(red));
+  background-image: linear-gradient(orange, red);
   padding: 0;
   margin: 0;
   display: -webkit-box;
@@ -35,19 +58,43 @@ body {
           justify-content: center;
   -ms-flex-line-pack: center;
       align-content: center;
-  z-index: 5;
+}
+
+#command_row button {
+  background-color: #CF0000;
+  border: 0;
+}
+
+#command_row button:hover {
+  color: green;
 }
 
 .item {
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin: 3px;
   padding: 10px;
+  width: 18vw;
+  min-width: 125px;
   border: 2px solid black;
   text-align: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  justify-items: center;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 .item:after {
-  content: "";
+  content: "<svg></svg>";
   position: absolute;
   top: 0;
   left: 0;
@@ -55,15 +102,22 @@ body {
   width: 100%;
   background-color: green;
   opacity: 0;
-  z-index: 3;
   -webkit-transition: opacity 0.1s;
   transition: opacity 0.1s;
 }
 
+.item canvas {
+  height: 127px;
+  width: 80%;
+  min-width: 135px;
+}
+
 .item img {
+  -o-object-fit: contain;
+     object-fit: contain;
   display: block;
-  height: 256px;
-  width: 256px;
+  height: 127px;
+  width: 127px;
 }
 
 .active {
