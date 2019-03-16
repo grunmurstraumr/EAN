@@ -1,0 +1,41 @@
+
+*{
+    box-sizing: border-box;
+}
+
+#items{
+    display: flex;
+    align-items: center;
+}
+.item{
+    position: relative;
+    margin: 3px;
+    padding: 10px;
+    border: 2px solid black;
+    text-align: center;
+    &:after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: green;
+        opacity: 0;
+        z-index: 3;
+        transition: opacity 0.1s;
+    }
+    img{
+        display: block;
+        height: 256px;
+        width: 256px;
+    }
+}
+
+.active{
+    position: relative;
+    box-shadow: 3px 3px 5px black;
+    &:after{
+        opacity: 0.3;
+    }
+}
