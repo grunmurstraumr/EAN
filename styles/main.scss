@@ -1,7 +1,9 @@
 
-$header_height: 100px;
+$header_height: 50px;
 
 *{
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 body{
@@ -20,7 +22,6 @@ header{
     background-image: linear-gradient(red, orange);
     box-shadow: 4px 0 10px orange;
     h1{
-        margin-top: $header_height/2;
         color: white;
         font-size: 20pt;
     }
@@ -47,11 +48,18 @@ header{
     align-content: center;
 
     button{
-        background-color: #CF0000;
-        border: 0;
+        background-image: linear-gradient(orange, red);
+        border: 1px solid black;
+        color: white;
+        font-size: 12pt;
+        font-style: bold;
+        transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s;
+        padding: 3px;
 
         &:hover{
-            color: green;
+            filter: brightness(200%);
+            font-size: 15pt;
+            box-shadow: 2px 2px 2px black;
         }
     }
   }
@@ -61,36 +69,25 @@ header{
     flex-direction: column;
     margin: 3px;
     padding: 10px;
-    width: 18vw;
-    min-width: 125px;
+    width: 10vw;
+    min-width: 110px;
     border: 2px solid black;
     text-align: center;
     align-items: center;
     justify-items: center;
-    flex-grow: 1;
-
-    &:after{
-        content: "<svg></svg>";
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background-color: green;
-        opacity: 0;
-        transition: opacity 0.1s;
-    }
+    user-select: none;
     canvas{
-        height: 127px;
-        width: 80%;
-        min-width: 135px;
+        height: 60px;
+        width: 95%;
+        min-width: 100px;
 
     }
     img{
         object-fit: contain;
         display: block;
-        height: 127px;
-        width: 127px;
+        height: 70px;
+        width: 90px;
+        margin-left: 10px;
     }
 }
 
@@ -98,6 +95,15 @@ header{
     position: relative;
     box-shadow: 3px 3px 5px black;
     &:after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: green;
+        /*opacity: 0;*/
+        transition: opacity 0.1s;
         opacity: 0.3;
     }
 }

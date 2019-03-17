@@ -1,10 +1,12 @@
 * {
+  margin: 0;
+  padding: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
 body {
-  padding: 120px 10vw 2vh 10vw;
+  padding: 70px 10vw 2vh 10vw;
 }
 
 header {
@@ -12,7 +14,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100px;
+  height: 50px;
   text-align: center;
   width: 100vw;
   /*background-color: red;*/
@@ -23,7 +25,6 @@ header {
 }
 
 header h1 {
-  margin-top: 50px;
   color: white;
   font-size: 20pt;
 }
@@ -61,12 +62,25 @@ header h1 {
 }
 
 #command_row button {
-  background-color: #CF0000;
-  border: 0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(orange), to(red));
+  background-image: linear-gradient(orange, red);
+  border: 1px solid black;
+  color: white;
+  font-size: 12pt;
+  font-style: bold;
+  -webkit-transition: font-size 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
+  transition: font-size 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
+  transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s;
+  transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
+  padding: 3px;
 }
 
 #command_row button:hover {
-  color: green;
+  -webkit-filter: brightness(200%);
+          filter: brightness(200%);
+  font-size: 15pt;
+  -webkit-box-shadow: 2px 2px 2px black;
+          box-shadow: 2px 2px 2px black;
 }
 
 .item {
@@ -80,44 +94,33 @@ header h1 {
           flex-direction: column;
   margin: 3px;
   padding: 10px;
-  width: 18vw;
-  min-width: 125px;
+  width: 10vw;
+  min-width: 110px;
   border: 2px solid black;
   text-align: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
   justify-items: center;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-}
-
-.item:after {
-  content: "<svg></svg>";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: green;
-  opacity: 0;
-  -webkit-transition: opacity 0.1s;
-  transition: opacity 0.1s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .item canvas {
-  height: 127px;
-  width: 80%;
-  min-width: 135px;
+  height: 60px;
+  width: 95%;
+  min-width: 100px;
 }
 
 .item img {
   -o-object-fit: contain;
      object-fit: contain;
   display: block;
-  height: 127px;
-  width: 127px;
+  height: 70px;
+  width: 90px;
+  margin-left: 10px;
 }
 
 .active {
@@ -127,6 +130,16 @@ header h1 {
 }
 
 .active:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: green;
+  /*opacity: 0;*/
+  -webkit-transition: opacity 0.1s;
+  transition: opacity 0.1s;
   opacity: 0.3;
 }
 /*# sourceMappingURL=main.css.map */
