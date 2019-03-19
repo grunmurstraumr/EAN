@@ -7,16 +7,19 @@ $header_height: 50px;
     box-sizing: border-box;
 }
 body{
+    min-height: 100vh;
     padding: $header_height+20px 10vw 2vh 10vw;
 }
 
 header{
+    display: flex;
+    align-content: center;
+    justify-content: center;
     z-index: 2;
     position: fixed;
     top: 0;
     left: 0;
     height: $header_height;
-    text-align: center;
     width: 100vw;
     /*background-color: red;*/
     background-image: linear-gradient(red, orange);
@@ -35,7 +38,7 @@ header{
 
 #command_row{
     width: 100vw;
-    height: 40px;
+    height: 60px;
     position:fixed;
     bottom: 0;
     left: 0;
@@ -53,13 +56,17 @@ header{
         color: white;
         font-size: 12pt;
         font-style: bold;
-        transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s;
+        height: 80%;
+        margin: 10px 10px 0 10px;
+        transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, height 0.2s, margin 0.2s;
         padding: 3px;
 
         &:hover{
             filter: brightness(200%);
             font-size: 15pt;
             box-shadow: 2px 2px 2px black;
+            margin: 0;
+            height: 100%;
         }
     }
   }
@@ -105,5 +112,77 @@ header{
         /*opacity: 0;*/
         transition: opacity 0.1s;
         opacity: 0.3;
+    }
+}
+
+.hidden{
+    display: none !important;
+    z-index: -1;
+}
+
+
+.close_x{
+    display: flex;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    height: 40px;
+    width: 40px;
+
+    justify-items: center;
+    align-items: center;
+    transition: transform 0.5s;
+
+    &:hover{
+        transform: scale(1.4);
+    }
+    span{
+        background-color: gray;
+        display: inline-block;
+        position: absolute;
+        height: 6px; /* line-thickness */
+        width: 100%; /* line-length */
+        border-radius: 6px;
+    }
+    & :first-child{
+        transform: rotate(45deg);
+    }
+    & :last-child{
+        transform: rotate(-45deg);
+
+    }
+
+}
+
+#data_file_dialog{
+    $input_height: 45px;
+    $input_width: 45px;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: calc(100vw/5);
+    background-color: rgba(0,0,0,0.8);
+    z-index: 4;
+    fieldset{
+        background-color: white;
+        border-radius: 10px;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        legend{
+            padding-top: 14pt;
+            font-size: 24pt;
+        }
+        input{
+
+            display: inline;
+        }
+        button{
+            display: inline;
+        }
     }
 }

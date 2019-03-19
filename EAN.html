@@ -11,23 +11,36 @@
         <header>
             <h1>Självscanningskoder</h1>
         </header>
-        <div id="Files">
+        <div class="hidden" id="data_file_dialog">
+            <div class="close_x" onclick="close_load_window()">
+                <span></span>
+                <span></span>
+            </div>
             <fieldset id="data_files">
-                <label>Data</label>
-                <input type='file' id='datafile' />
+                <legend>Data</legend>
+                <input type='file' id='datafile'/>
                 <button onclick="load_data()">Ladda</button>
-                <button>Spara som</button>
-            </fieldset>
-            <fieldset id="config_files">
-                <label>Config</label>
-                <input type='file' id='configfile' />
-                <button onclick="load_config()">Ladda</button>
-                <button>Spara som</button>
             </fieldset>
         </div>
+        <!--
+        </div class="" id="config_file_dialog">
+            <div class="close_x" onclick="">
+                <span></span>
+                <span></span>
+            </div>
+            <fieldset id="config_files">
+                <legend>Config</label>
+                <input type='file' id='configfile' />
+                <button onclick="load_config()">Ladda</button>
+            </fieldset>
+        </div>
+        -->
         <div id="items"></div>
         <footer id="command_row">
+            <button onclick="show_load_window()">Ladda sortiment</button>
             <button onclick="write_pdf()">Skriv ut (pdf)</button>
+            <button onclick="show_settings_window()">Inställningar</button>
+
         </footer>
         <div id="settings">
 

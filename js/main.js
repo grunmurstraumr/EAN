@@ -40,22 +40,25 @@ class Entry{
 
 }
 function render(){
+    document.getElementById('items').innerHTML = "";
     let root = document.getElementById('items');
+    
     for (let i = 0; i < data.length; ++i){
         let item = data[i];
         let html = document.createElement('div');
+        let id = item.name.replace(' ', '-')
         html.classList.add('item');
         html.innerHTML =`
             <h2> ${item.name} </h2>
             <p> ${item.plu} </p>
             <img  src=" ${item.image} "></img>
-            <canvas crossOrigin="Anonymous" id="${item.name}_barcode"></canvas>
+            <canvas crossOrigin="Anonymous" id="${id}_barcode"></canvas>
             `
         root.appendChild(html);
         html.addEventListener('click', () => {
             html.classList.toggle('active');
         })
-        JsBarcode(`#${item.name}_barcode`, item.ean, {
+        JsBarcode(`#${id}_barcode`, item.ean, {
             height: settings['jsbarcode-height'],
             width: settings['jsbarcode-width'],
             displayValue: settings['display-value'],
@@ -73,6 +76,10 @@ function load_data(){
             //Iterate over array and split each into sub-arrays of values
             entries[i] = entries[i].split(settings['csv-separator']);
             // Iterate over sub-array and push to data contents
+            // Strip leading and trailing whitespaces
+            for (let j = 0; j < entries[i].length; ++j){
+                entries[i][j] = entries[i][j].trim();
+            }
             console.log(entries[i]);
             let [name, plu, image_url, ean] = entries[i];
             if (name && plu && ean)
@@ -117,42 +124,6 @@ function file(f){
         console.log(reader.result)
     }
 }
-/*
-const data = [
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/null.jpg' ),
-    new Entry('Apple', '3214', '2092321400000', './images/apple.jpg'),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-    new Entry('test', '1234', '2092123400000', './images/test.png'),
-    new Entry('Citron', '3182', '2092123400000', './images/citron.jpg' ),
-
-]
-*/
 
 const write_pdf = (name) => {
     let doc = new jsPDF({unit: settings['unit'],
@@ -209,14 +180,17 @@ const write_pdf = (name) => {
             // Catch error but nothing needs to be done.
             console.log(error)
             // TODO add default placeholder image and uncomment following lines
-            /*
+            
+            placeholder = document.createElement('IMG');
+            placeholder.setAttribute('src', './images/placeholder.png');
+            console.log(placeholder);
             doc.addImage(placeholder,
-            'JPEG',
+            'PNG',
             current_left_offset, 
             component_height_offset, 
             settings['image-width'], 
             settings['image-height']);
-            */
+            
         }
         component_height_offset += settings['image-height']
         doc.addImage(current.querySelector('canvas'),
@@ -230,6 +204,17 @@ const write_pdf = (name) => {
     doc.save(`${settings['filename']}${date.getDate()}-${date.getMonth()}${settings['file-ending']}`);
 }
 
+let load_window_id = '#data_file_dialog';
+const show_load_window = () =>{
+    let dialog = document.querySelector(load_window_id);
+    dialog.classList.remove('hidden');
+
+}
+
+const close_load_window = () =>{
+    let dialog = document.querySelector(load_window_id);
+    dialog.classList.add('hidden');
+}
 
 
 document.addEventListener('DOMContentLoaded', () => {
