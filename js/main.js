@@ -25,6 +25,7 @@ const settings = {
     'filename': 'Självscanningskoder',
     'file-ending': '.pdf',
     'csv-separator': ';',
+    'proxy': "https://cors-anywhere.herokuapp.com/",
 }
 
 settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] + settings['image-height']+ 2*settings['text-line-height']
@@ -168,8 +169,12 @@ const write_pdf = (name) => {
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];
+        let image_elem = current.querySelector('img');
+        let image_url = image_elem['src'];
+        //console.log(image_url);
+
         try {
-            doc.addImage(current.querySelector('img'),
+            doc.addImage(image_elem,
                 'JPEG',
                 current_left_offset, 
                 component_height_offset, 
@@ -216,8 +221,30 @@ const close_load_window = () =>{
     dialog.classList.add('hidden');
 }
 
+const shutdown = (event) =>{
+    // Placeholder function for sending shutdown command to server
+    event.preventDevault();
+    console.log(`x: ${event.clientX}  y: ${event.clientY}`);
+    if (event.clientX < 0 || event.clientY < 0){
+        return "Close window";
+    }
+    else
+        return "undefined"; 
+}
 
+// Uncomment to call shutdown procedure on page close
+window.addEventListener('beforeunload', function (event) {
+    event.preventDefault();
+    event.returnValue = undefined; 
+
+});
+
+document.querySelector('#data_file_dialog').addEventListener('')
 document.addEventListener('DOMContentLoaded', () => {
+    // Set a periodic interval to communicate with server that 
+    // the application is alive. If not the server should quit
+    // after a specified time
+    // setInterval()
     let root = document.getElementById('items');
     for (let i = 0; i < data.length; ++i){
         let item = data[i];
