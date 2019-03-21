@@ -73,15 +73,13 @@ function load_data(){
     reader.onload = () =>{
         // Split file into array of data entries
         let entries = reader.result.split('\n');
+        //Iterate over array and split each into sub-arrays of values
         for (let i = 0; i < entries.length; ++i){
-            //Iterate over array and split each into sub-arrays of values
             entries[i] = entries[i].split(settings['csv-separator']);
-            // Iterate over sub-array and push to data contents
-            // Strip leading and trailing whitespaces
+            // Iterate over each value and strip leading and trailing whitespaces
             for (let j = 0; j < entries[i].length; ++j){
                 entries[i][j] = entries[i][j].trim();
             }
-            console.log(entries[i]);
             let [name, plu, image_url, ean] = entries[i];
             if (name && plu && ean)
                 data.push(new Entry( name, plu, image_url, ean));
@@ -156,9 +154,13 @@ const write_pdf = (name) => {
             row_offset,
             settings['card-width'],
             settings['card-height'],
-            'S');
-        doc.setFontSize(settings['heading-font-size']);
-        doc.text(current.querySelector('h2').innerHTML, 
+            'S')
+        let text = current.querySelector('h2').innerHTML;
+        if (text.length > settings['heading-font-size'])
+            doc.setFontSize((settings['card-width']/text.length)*5)
+        else
+            doc.setFontSize(settings['heading-font-size'])
+        doc.text(text, 
             current_left_offset, 
             component_height_offset,
             {'baseline': 'top'});
