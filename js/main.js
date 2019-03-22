@@ -52,12 +52,15 @@ function render(){
             <h2> ${item.name} </h2>
             <p> ${item.plu} </p>
             <img  src=" ${item.image} "></img>
+            <span class="spacer"></span>
             <canvas crossOrigin="Anonymous" id="${id}_barcode"></canvas>
             `
         root.appendChild(html);
         html.addEventListener('click', () => {
             html.classList.toggle('active');
         })
+        console.log(html);
+
         JsBarcode(`#${id}_barcode`, item.ean, {
             height: settings['jsbarcode-height'],
             width: settings['jsbarcode-width'],
@@ -164,13 +167,15 @@ const write_pdf = (name) => {
         else
             doc.setFontSize(settings['heading-font-size'])
         doc.text(text, 
-            current_left_offset, 
+            current_left_offset+(settings['card-width']/2)-(text.length), 
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];
+        // Write plu
         doc.setFontSize(settings['plu-font-size']);
-        doc.text(current.querySelector('p').innerHTML, 
-            current_left_offset,
+        let plu = current.querySelector('p').innerHTML 
+        doc.text(plu, 
+            current_left_offset+(settings['card-width']/3)-(plu.length/3),
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];
