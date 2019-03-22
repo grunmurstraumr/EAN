@@ -12,15 +12,19 @@
             <h1>Självscanningskoder</h1>
         </header>
         <div class="hidden" id="data_file_dialog">
-            <div class="close_x" onclick="close_load_window()">
-                <span></span>
-                <span></span>
-            </div>
+            
+            
             <fieldset id="data_files">
+                <div class="close_x" onclick="close_load_window()">
+                        <span></span>
+                        <span></span>
+                </div>
+                        
                 <legend>Data</legend>
                 <input type='file' id='datafile'/>
                 <button onclick="load_data()">Ladda</button>
             </fieldset>
+        
         </div>
         <!--
         </div class="" id="config_file_dialog">

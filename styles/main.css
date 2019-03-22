@@ -166,9 +166,9 @@ header h1 {
   display: flex;
   position: absolute;
   top: 25px;
-  right: 25px;
-  height: 40px;
-  width: 40px;
+  right: 15px;
+  height: 30px;
+  width: 30px;
   justify-items: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -185,12 +185,12 @@ header h1 {
 }
 
 .close_x span {
-  background-color: gray;
+  background-color: black;
   display: inline-block;
   position: absolute;
-  height: 6px;
+  height: 4px;
   /* line-thickness */
-  width: 100%;
+  width: 80%;
   /* line-length */
   border-radius: 6px;
 }
@@ -206,18 +206,26 @@ header h1 {
 }
 
 #data_file_dialog {
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  padding: calc(100vw/5);
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 4;
 }
 
 #data_file_dialog fieldset {
+  position: relative;
   background-color: white;
   border-radius: 10px;
   padding: 50px;

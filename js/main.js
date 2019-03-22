@@ -1,5 +1,4 @@
-const a4h = 297;
-const a4w = 210;
+let window_stack = [];
 const settings = {
     'page-title': 'Självscanningskoder',
     'jsbarcode-height': 60,
@@ -84,7 +83,11 @@ function load_data(){
             if (name && plu && ean)
                 data.push(new Entry( name, plu, image_url, ean));
         }
-        data.sort()
+        data.sort((a,b)=>{
+            if (a.name > b.name)
+                return 1
+            else
+                return -1});
         render();
     }
 
@@ -214,8 +217,9 @@ const write_pdf = (name) => {
 let load_window_id = '#data_file_dialog';
 const show_load_window = () =>{
     let dialog = document.querySelector(load_window_id);
+    window_stack.push(dialog)
     dialog.classList.remove('hidden');
-
+    dialog.focus();
 }
 
 const close_load_window = () =>{
@@ -223,6 +227,10 @@ const close_load_window = () =>{
     dialog.classList.add('hidden');
 }
 
+const close_window = () => {
+    let current = window_stack.pop();
+    current.classList.add('hidden');
+}
 const shutdown = (event) =>{
     // Placeholder function for sending shutdown command to server
     event.preventDevault();
@@ -234,40 +242,29 @@ const shutdown = (event) =>{
         return "undefined"; 
 }
 
-// Uncomment to call shutdown procedure on page close
+// Following function is intended for cleanups at window close.
+/*
 window.addEventListener('beforeunload', function (event) {
     event.preventDefault();
     event.returnValue = undefined; 
-
 });
+*/
+const load_window_escape_listener = (event) =>{
+    if (event.key === 'Escape'){
+        event.preventDefault();
+        close_window();
+    }
+}
+const setup_event_listeners = ()=>{
+    document.addEventListener('keydown', load_window_escape_listener)
+    
+}
 
-document.querySelector('#data_file_dialog').addEventListener('')
 document.addEventListener('DOMContentLoaded', () => {
     // Set a periodic interval to communicate with server that 
     // the application is alive. If not the server should quit
     // after a specified time
     // setInterval()
-    let root = document.getElementById('items');
-    for (let i = 0; i < data.length; ++i){
-        let item = data[i];
-        let html = document.createElement('div');
-        html.classList.add('item');
-        html.innerHTML =`
-            <h2> ${item.name} </h2>
-            <p> ${item.plu} </p>
-            <img  src=" ${item.image} "></img>
-            <canvas crossOrigin="Anonymous" id="${item.name}_barcode"></canvas>
-            `
-        root.appendChild(html);
-        html.addEventListener('click', () => {
-            html.classList.toggle('active');
-        })
-        JsBarcode(`#${item.name}_barcode`, item.ean, {
-            height: settings['jsbarcode-height'],
-            width: settings['jsbarcode-width'],
-            displayValue: settings['display-value'],
-        });
-    }
-
+    setup_event_listeners();
 });
 
