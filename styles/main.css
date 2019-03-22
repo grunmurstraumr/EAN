@@ -26,8 +26,8 @@ header {
   height: 50px;
   width: 100vw;
   /*background-color: red;*/
-  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(orange));
-  background-image: linear-gradient(red, orange);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(darkred), to(red));
+  background-image: linear-gradient(darkred, red);
   -webkit-box-shadow: 4px 0 10px orange;
           box-shadow: 4px 0 10px orange;
 }
@@ -55,8 +55,8 @@ header h1 {
   bottom: 0;
   left: 0;
   background-color: red;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(orange), to(red));
-  background-image: linear-gradient(orange, red);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(darkred));
+  background-image: linear-gradient(red, darkred);
   padding: 0;
   margin: 0;
   display: -webkit-box;
@@ -70,8 +70,8 @@ header h1 {
 }
 
 #command_row button {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(orange), to(red));
-  background-image: linear-gradient(orange, red);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(darkred));
+  background-image: linear-gradient(red, darkred);
   border: 1px solid black;
   color: white;
   font-size: 12pt;
@@ -88,11 +88,8 @@ header h1 {
 #command_row button:hover {
   -webkit-filter: brightness(200%);
           filter: brightness(200%);
-  font-size: 15pt;
   -webkit-box-shadow: 2px 2px 2px black;
           box-shadow: 2px 2px 2px black;
-  margin: 0;
-  height: 100%;
 }
 
 .item {
@@ -165,10 +162,10 @@ header h1 {
   display: -ms-flexbox;
   display: flex;
   position: absolute;
-  top: 25px;
-  right: 15px;
-  height: 30px;
-  width: 30px;
+  top: 30px;
+  right: 10px;
+  height: 20px;
+  width: 20px;
   justify-items: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -190,7 +187,7 @@ header h1 {
   position: absolute;
   height: 4px;
   /* line-thickness */
-  width: 80%;
+  width: 100%;
   /* line-length */
   border-radius: 6px;
 }
