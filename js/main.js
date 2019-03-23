@@ -1,5 +1,6 @@
 let window_stack = [];
 const settings = {
+    'fallback-image': './images/placeholder.png',
     'page-title': 'Självscanningskoder',
     'jsbarcode-height': 60,
     'jsbarcode-width': 2,
@@ -39,6 +40,14 @@ class Entry{
     }
 
 }
+
+function image_exists(image_url){
+    let http = new XMLHttpRequest();
+    http.open('HEAD', image_url, false);
+    http.send();
+
+    return http.status != 404;
+}
 function render(){
     document.getElementById('items').innerHTML = "";
     let root = document.getElementById('items');
@@ -46,15 +55,21 @@ function render(){
     for (let i = 0; i < data.length; ++i){
         let item = data[i];
         let html = document.createElement('div');
-        let id = item.name.replace(' ', '-')
+        let id = item.name.replace(/[\s\/]/g, '-')
         html.classList.add('item');
+        img = document.createElement('img');
+        if (image_exists(item.image))
+            img.src = item.image;
+        else
+            img.src = settings['fallback-image'];
         html.innerHTML =`
             <h2> ${item.name} </h2>
             <p> ${item.plu} </p>
-            <img  src=" ${item.image} "></img>
-            <span class="spacer"></span>
-            <canvas crossOrigin="Anonymous" id="${id}_barcode"></canvas>
             `
+        canvas = document.createElement('canvas');
+        canvas.id = `${id}_barcode`;
+        html.appendChild(img);
+        html.appendChild(canvas);
         root.appendChild(html);
         html.addEventListener('click', () => {
             html.classList.toggle('active');
@@ -121,15 +136,6 @@ function load_config(){
     render();
 }
 
-
-function file(f){
-    let reader = new FileReader();
-    reader.readAsText(f);
-    reader.onload = () => {
-        console.log(reader.result)
-    }
-}
-
 const write_pdf = (name) => {
     let doc = new jsPDF({unit: settings['unit'],
         orientation: settings['orientation']});
@@ -167,7 +173,7 @@ const write_pdf = (name) => {
         else
             doc.setFontSize(settings['heading-font-size'])
         doc.text(text, 
-            current_left_offset+(settings['card-width']/2)-(text.length), 
+            current_left_offset+(settings['card-width']/2)-(text.length+(settings['card-padding']*2)), 
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];

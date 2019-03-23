@@ -133,14 +133,7 @@ header h1 {
   height: 70px;
   width: 90px;
   margin-left: 10px;
-}
-
-.item .spacer {
-  /* Used to position canvas at the bottom of the card */
-  width: 95%;
-  min-width: 100px;
-  display: block;
-  height: 60px;
+  margin-bottom: 80px;
 }
 
 .item canvas {
@@ -237,6 +230,7 @@ header h1 {
   left: 0;
   width: 100vw;
   height: 100vh;
+  margin: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 4;
 }
@@ -258,7 +252,7 @@ header h1 {
 }
 
 #data_file_dialog fieldset legend {
-  padding-top: 14pt;
+  padding-top: 20px;
   font-size: 24pt;
 }
 
