@@ -173,7 +173,7 @@ const write_pdf = (name) => {
         else
             doc.setFontSize(settings['heading-font-size'])
         doc.text(text, 
-            current_left_offset+(settings['card-width']/2)-(text.length+(settings['card-padding']*2)), 
+            current_left_offset,//+(settings['card-width']/2)-(text.length+(settings['card-padding']*2)), 
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];
