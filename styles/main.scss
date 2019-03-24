@@ -1,5 +1,9 @@
 
-$header_height: 50px;
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+$header_height: 60px;
+$gradient_start: rgb(43, 0, 0);
+$gradient_stop: rgb(255,0,0);
+$text-color: rgb(221, 221, 221);
 
 *{
     margin: 0;
@@ -15,18 +19,20 @@ header{
     display: flex;
     align-content: center;
     justify-content: center;
+    padding-top: 7px;
     z-index: 2;
     position: fixed;
     top: 0;
     left: 0;
     height: $header_height;
     width: 100vw;
-    /*background-color: red;*/
-    background-image: linear-gradient(darkred, red);
-    box-shadow: 4px 0 10px orange;
+    background-color: red;
+    background-image: linear-gradient($gradient_start, $gradient_stop);
+    /*box-shadow: 4px 0 10px orange;*/
     h1{
-        color: white;
-        font-size: 20pt;
+        font-family: 'Noto Sans JP', sans-serif;
+        color: $text-color;
+        font-size: 22pt;
     }
 }
 
@@ -43,7 +49,7 @@ header{
     bottom: 0;
     left: 0;
     background-color: red;
-    background-image: linear-gradient(red, darkred);
+    background-image: linear-gradient($gradient_stop, $gradient_start);
     padding: 0;
     margin: 0;
     display: flex;
@@ -51,17 +57,19 @@ header{
     align-content: center;
 
     button{
-        background-image: linear-gradient(red, darkred);
-        border: 1px solid black;
+        background-image: linear-gradient($gradient_stop, $gradient_start);
+        border: none;
         color: white;
         font-size: 12pt;
         font-style: bold;
-        height: 80%;
-        margin: 10px 10px 0 10px;
+        height: 100%;
+        margin: 0 10px 0 10px;
         transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, height 0.2s, margin 0.2s;
-        padding: 3px;
+        padding: 3px 10px 3px 10px;
+        font-family: 'Noto Sans JP', sans-serif;
 
         &:hover{
+            border: 1px solid black;
             filter: brightness(200%);
             //font-size: 15pt;
             box-shadow: 2px 2px 2px black;
@@ -71,6 +79,7 @@ header{
     }
   }
 .item{
+    font-family: 'Noto Sans JP', sans-serif;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -88,6 +97,8 @@ header{
         display: block; 
         width: 100%;
         overflow: hidden;
+        
+        flex-grow: 2;
     }
     img{
         object-fit: contain;

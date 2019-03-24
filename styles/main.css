@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP");
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +8,7 @@
 
 body {
   min-height: 100vh;
-  padding: 70px 10vw 2vh 10vw;
+  padding: 80px 10vw 2vh 10vw;
 }
 
 header {
@@ -19,22 +20,23 @@ header {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  padding-top: 7px;
   z-index: 2;
   position: fixed;
   top: 0;
   left: 0;
-  height: 50px;
+  height: 60px;
   width: 100vw;
-  /*background-color: red;*/
-  background-image: -webkit-gradient(linear, left top, left bottom, from(darkred), to(red));
-  background-image: linear-gradient(darkred, red);
-  -webkit-box-shadow: 4px 0 10px orange;
-          box-shadow: 4px 0 10px orange;
+  background-color: red;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#2b0000), to(red));
+  background-image: linear-gradient(#2b0000, red);
+  /*box-shadow: 4px 0 10px orange;*/
 }
 
 header h1 {
-  color: white;
-  font-size: 20pt;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: #dddddd;
+  font-size: 22pt;
 }
 
 #items {
@@ -55,8 +57,8 @@ header h1 {
   bottom: 0;
   left: 0;
   background-color: red;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(darkred));
-  background-image: linear-gradient(red, darkred);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(#2b0000));
+  background-image: linear-gradient(red, #2b0000);
   padding: 0;
   margin: 0;
   display: -webkit-box;
@@ -70,22 +72,24 @@ header h1 {
 }
 
 #command_row button {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(darkred));
-  background-image: linear-gradient(red, darkred);
-  border: 1px solid black;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(#2b0000));
+  background-image: linear-gradient(red, #2b0000);
+  border: none;
   color: white;
   font-size: 12pt;
   font-style: bold;
-  height: 80%;
-  margin: 10px 10px 0 10px;
+  height: 100%;
+  margin: 0 10px 0 10px;
   -webkit-transition: font-size 0.2s, height 0.2s, margin 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
   transition: font-size 0.2s, height 0.2s, margin 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
   transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, height 0.2s, margin 0.2s;
   transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, height 0.2s, margin 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
-  padding: 3px;
+  padding: 3px 10px 3px 10px;
+  font-family: 'Noto Sans JP', sans-serif;
 }
 
 #command_row button:hover {
+  border: 1px solid black;
   -webkit-filter: brightness(200%);
           filter: brightness(200%);
   -webkit-box-shadow: 2px 2px 2px black;
@@ -93,6 +97,7 @@ header h1 {
 }
 
 .item {
+  font-family: 'Noto Sans JP', sans-serif;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -124,6 +129,9 @@ header h1 {
   display: block;
   width: 100%;
   overflow: hidden;
+  -webkit-box-flex: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
 }
 
 .item img {
