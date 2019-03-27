@@ -12,6 +12,10 @@ body {
 }
 
 header {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -80,16 +84,17 @@ header h1 {
   font-style: bold;
   height: 100%;
   margin: 0 10px 0 10px;
-  -webkit-transition: font-size 0.2s, height 0.2s, margin 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
-  transition: font-size 0.2s, height 0.2s, margin 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
-  transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, height 0.2s, margin 0.2s;
-  transition: filter 0.2s, font-size 0.2s, box-shadow 0.2s, height 0.2s, margin 0.2s, -webkit-filter 0.2s, -webkit-box-shadow 0.2s;
+  -webkit-transition: -webkit-filter 0.2s;
+  transition: -webkit-filter 0.2s;
+  transition: filter 0.2s;
+  transition: filter 0.2s, -webkit-filter 0.2s;
   padding: 3px 10px 3px 10px;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
 #command_row button:hover {
   border: 1px solid black;
+  margin: 0 9px 0 9px;
   -webkit-filter: brightness(200%);
           filter: brightness(200%);
   -webkit-box-shadow: 2px 2px 2px black;
@@ -109,7 +114,7 @@ header h1 {
   margin: 3px;
   padding: 10px;
   width: 10vw;
-  min-width: 150px;
+  min-width: 200px;
   border: 2px solid black;
   text-align: center;
   -webkit-box-align: center;
@@ -129,6 +134,8 @@ header h1 {
   display: block;
   width: 100%;
   overflow: hidden;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-flex: 2;
       -ms-flex-positive: 2;
           flex-grow: 2;

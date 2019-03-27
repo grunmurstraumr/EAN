@@ -1,6 +1,6 @@
-Ananas;                 4433;           2092443300000;  ./images/ananas.jpg
-Aubergine;              4061;           2092406100000;  ./images/aubergine.jpg
-Avokado;                4227;           2092422700000;  ./images/avokado.jpg
+Ananas;                 4433;           2092443300000;  ./images/ananas.jpg; 0
+Aubergine;              4061;           2092406100000;  ./images/aubergine.jpg; 1
+Avokado;                4227;           2092422700000;  ./images/avokado.jpg; 0
 Gurka Svensk;           4595;           2092459500000;  ./images/gurkasv.jpg
 Gurka Spanien;          3254;           2092325400000;  ./images/gurkaES.jpg
 Gurka Hietalas;         6666;           2092666600000;  ./images/gurka_hietalas.jpg

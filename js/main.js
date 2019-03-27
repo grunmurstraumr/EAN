@@ -26,19 +26,37 @@ const settings = {
     'file-ending': '.pdf',
     'csv-separator': ';',
     'proxy': "https://cors-anywhere.herokuapp.com/",
+    'font-conversion-factor': 0.353, // 1/72 inch in millimeter
+    'default-save-filename': 'streckkodslista.csv',
 }
 
 settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] + settings['image-height']+ 2*settings['text-line-height']
 let data = []
-
+let find_data = (value, key) =>{
+    //Searches in data for entry on specified key-value pair
+    return data.find((element) =>{
+        return element[key].trim() === value.trim()
+    });
+}
 class Entry{
-    constructor(name, plu, ean, image_url){
+    constructor(name, plu, ean, image_url, active){
         this.name = name;
         this.plu = plu,
         this.ean = ean
         this.image = image_url
+        this.active = active
+    }
+    fields(){
+        //Return an array with the data fields
+        return [this.name, this.plu, this.ean, this.image, this.active];
     }
 
+
+}
+
+strToBool = str => {
+    const truthy = ['true', '1'];
+    return truthy.indexOf(str.toLowerCase()) !== -1;
 }
 
 function image_exists(image_url){
@@ -55,7 +73,7 @@ function render(){
     for (let i = 0; i < data.length; ++i){
         let item = data[i];
         let html = document.createElement('div');
-        let id = item.name.replace(/[\s\/]/g, '-')
+        let id = item.name.replace(/[\s\/]/g, '-') // Replaces spaces with hyphens
         html.classList.add('item');
         img = document.createElement('img');
         if (image_exists(item.image))
@@ -73,17 +91,25 @@ function render(){
         root.appendChild(html);
         html.addEventListener('click', () => {
             html.classList.toggle('active');
-        })
-        console.log(html);
+            data_representation = find_data(html.querySelector('p').innerHTML, 'plu')
+            console.log(find_data(html.querySelector('p').innerHTML, 'plu'));
+           
+            data_representation.active = strToBool(data_representation.active) ? 'false' : 'true' ;
+            console.log(`HTML: ${html}\nDATA: ${data_representation}`);
+        });
 
         JsBarcode(`#${id}_barcode`, item.ean, {
             height: settings['jsbarcode-height'],
             width: settings['jsbarcode-width'],
             displayValue: settings['display-value'],
         });
+        if (strToBool(item.active))
+            html.classList.add('active')
     }
 }
+
 function load_data(){
+    clear_all();
     let file = document.querySelector("#data_files input").files[0];
     let reader = new FileReader();
     reader.readAsText(file);
@@ -97,9 +123,11 @@ function load_data(){
             for (let j = 0; j < entries[i].length; ++j){
                 entries[i][j] = entries[i][j].trim();
             }
-            let [name, plu, image_url, ean] = entries[i];
+            if (entries[i].length < 5)
+                entries[i].push('false')
+            let [name, plu, image_url, ean, active] = entries[i];
             if (name && plu && ean)
-                data.push(new Entry( name, plu, image_url, ean));
+                data.push(new Entry( name, plu, image_url, ean, active));
         }
         data.sort((a,b)=>{
             if (a.name > b.name)
@@ -158,8 +186,8 @@ const write_pdf = (name) => {
         // Draw the border
         let current_left_offset = settings['page-margin'] + 
             column *(settings['card-width'] + 
-            settings['card-margin']) + 
-            settings['card-padding'];
+            settings['card-margin']); // + 
+            //settings['card-padding'];
         let component_height_offset = row_offset + settings['card-padding'];
         doc.rect(
             current_left_offset - settings['card-padding'], 
@@ -172,16 +200,22 @@ const write_pdf = (name) => {
             doc.setFontSize((settings['card-width']/text.length)*5)
         else
             doc.setFontSize(settings['heading-font-size'])
+        
+        // compute center
+        let text_width = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+        let offset = (settings['card-width'] - settings['card-padding']*2 - text_width)/2;
         doc.text(text, 
-            current_left_offset,//+(settings['card-width']/2)-(text.length+(settings['card-padding']*2)), 
+            current_left_offset + offset,
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];
         // Write plu
         doc.setFontSize(settings['plu-font-size']);
         let plu = current.querySelector('p').innerHTML 
+        let plu_width = doc.getStringUnitWidth(plu) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+        let plu_offset = (settings['card-width'] - settings['card-padding']*2 - plu_width)/2;
         doc.text(plu, 
-            current_left_offset+(settings['card-width']/3)-(plu.length/3),
+            current_left_offset + plu_offset,
             component_height_offset,
             {'baseline': 'top'});
         component_height_offset += settings['text-line-height'];
@@ -225,8 +259,84 @@ const write_pdf = (name) => {
     doc.save(`${settings['filename']}${date.getDate()}-${date.getMonth()}${settings['file-ending']}`);
 }
 
+
+
+let get_fields_from_html = (item) => {
+    //Returns an array with the data fetched from the html
+    // [name, plu, ean, image_url, active]
+    let search_key = item.querySelector('p').innerHTML.trim() // Search on plu, not name, Very hacky solution. Needs refactoring
+    let data_item = find_data(search_key, 'plu');
+    return data_item.fields();
+}
+
+let save_data = () =>{
+    // Use a data-URI anchor to create a downloadable file
+    let format_csv = (str_arr) => {
+        output = "";
+        for (let value of str_arr){
+            output += `${value}; `
+        }
+        return output;
+    }
+    // Set up download anchor
+    var download_anchor = document.createElement('a');
+    download_anchor.style.display = 'none';
+    // Get active items from html
+    let data_items = Array.from(document.querySelectorAll('.item'));
+
+    for (let i = 0; i < data_items.length; ++i){
+        data_items[i] = get_fields_from_html(data_items[i]);
+    }
+    //data_items.map(get_fields_from_html);
+    
+    let output = "";
+    for (let item of data_items){
+        //console.log(item)
+        output += `${format_csv(item)}\n`
+    }
+    download_anchor.setAttribute('href', 'data:text/plain;encoding=utf-8,' + encodeURIComponent(output));//'data:application/octet-stream,' + encodeURIComponent(output));
+    download_anchor.setAttribute('download', settings['default-save-filename']);
+    document.body.appendChild(download_anchor);
+    download_anchor.click();
+    document.body.removeChild(download_anchor);
+    
+}
+let save_active = () =>{
+    // Use a data-URI anchor to create a downloadable file
+    let format_csv = (str_arr) => {
+        output = "";
+        for (let value of str_arr){
+            output += `${value}; `
+        }
+        return output;
+    }
+    // Set up download anchor
+    var download_anchor = document.createElement('a');
+    download_anchor.style.display = 'none';
+    // Get active items from html
+    let active_items = Array.from(document.querySelectorAll('.active'));
+
+    for (let i = 0; i < active_items.length; ++i){
+        active_items[i] = get_fields_from_html(active_items[i]);
+    }
+    //active_items.map(get_fields_from_html);
+    
+    let output = "";
+    for (let item of active_items){
+        //console.log(item)
+        output += `${format_csv(item)}\n`
+    }
+    download_anchor.setAttribute('href', 'data:text/plain;encoding=utf-8,' + encodeURIComponent(output));//'data:application/octet-stream,' + encodeURIComponent(output));
+    download_anchor.setAttribute('download', settings['default-save-filename']);
+    document.body.appendChild(download_anchor);
+    download_anchor.click();
+    document.body.removeChild(download_anchor);
+    
+}
+
 let load_window_id = '#data_file_dialog';
 const show_load_window = () =>{
+    console.log('hello')
     let dialog = document.querySelector(load_window_id);
     window_stack.push(dialog)
     dialog.classList.remove('hidden');
@@ -242,24 +352,14 @@ const close_window = () => {
     let current = window_stack.pop();
     current.classList.add('hidden');
 }
-const shutdown = (event) =>{
-    // Placeholder function for sending shutdown command to server
-    event.preventDevault();
-    console.log(`x: ${event.clientX}  y: ${event.clientY}`);
-    if (event.clientX < 0 || event.clientY < 0){
-        return "Close window";
-    }
-    else
-        return "undefined"; 
+
+const clear_all = () =>{
+    console.log('clear called');
+    console.log(document.querySelector('#items'));
+    document.querySelector('#items').innerHTML = "";
+    data = [];
 }
 
-// Following function is intended for cleanups at window close.
-/*
-window.addEventListener('beforeunload', function (event) {
-    event.preventDefault();
-    event.returnValue = undefined; 
-});
-*/
 const load_window_escape_listener = (event) =>{
     if (event.key === 'Escape'){
         event.preventDefault();
