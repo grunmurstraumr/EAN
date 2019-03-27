@@ -11,11 +11,11 @@
         <header>
             <h1>Självscanningskoder</h1>
         </header>
-        <div class="hidden" id="data_file_dialog">
+        <div class="dialog hidden" id="data_file_dialog">
             
             
             <fieldset id="data_files">
-                <div class="close_x" onclick="close_load_window()">
+                <div class="close_x" onclick="close_window()">
                         <span></span>
                         <span></span>
                 </div>
@@ -25,6 +25,28 @@
                 <button onclick="load_data()">Ladda</button>
             </fieldset>
         
+        </div>
+
+        <div class="dialog hidden" id="add_data_dialog">
+            <fieldset id=''>
+                <div class="close_x" onclick="close_window()">
+                        <span></span>
+                        <span></span>
+                </div>
+                <legend>Lägg till</legend>
+                <label for="add_data_name">Benämning</label>
+                <input type="text" id="add_data_name">
+                <label for="add_data_plu">PLU</label>
+                <input type="text" id="add_data_plu">
+                <label for="add_data_ean">EAN</label>
+                <input type="text" id="add_data_ean">
+                <label for="add_data_image">Bild</label>
+                <input type="file" id="add_data_image">
+                <label for="add_data_active_check">Aktiv</label>
+                <input type="checkbox">
+                <button onclick="add_new()">Skapa</button>
+
+            </fieldset>
         </div>
         <!--
         </div class="" id="config_file_dialog">
@@ -45,6 +67,7 @@
             <button onclick="write_pdf()">Skriv ut (pdf)</button>
             <button onclick="save_data()">Spara</button>
             <button onclick="clear_all()">Rensa</button>
+            <button onclick="open_dialog('add_data_dialog')">Lägg till</button>
             <!--<button onclick="show_settings_window()">Inställningar</button>-->
 
         </footer>

@@ -25,8 +25,6 @@ const settings = {
     'filename': 'Självscanningskoder',
     'file-ending': '.pdf',
     'csv-separator': ';',
-    'proxy': "https://cors-anywhere.herokuapp.com/",
-    'font-conversion-factor': 0.353, // 1/72 inch in millimeter
     'default-save-filename': 'streckkodslista.csv',
 }
 
@@ -38,6 +36,7 @@ let find_data = (value, key) =>{
         return element[key].trim() === value.trim()
     });
 }
+
 class Entry{
     constructor(name, plu, ean, image_url, active){
         this.name = name;
@@ -66,6 +65,8 @@ function image_exists(image_url){
 
     return http.status != 404;
 }
+
+
 function render(){
     document.getElementById('items').innerHTML = "";
     let root = document.getElementById('items');
@@ -91,11 +92,8 @@ function render(){
         root.appendChild(html);
         html.addEventListener('click', () => {
             html.classList.toggle('active');
-            data_representation = find_data(html.querySelector('p').innerHTML, 'plu')
-            console.log(find_data(html.querySelector('p').innerHTML, 'plu'));
-           
+            data_representation = find_data(html.querySelector('p').innerHTML, 'plu');
             data_representation.active = strToBool(data_representation.active) ? 'false' : 'true' ;
-            console.log(`HTML: ${html}\nDATA: ${data_representation}`);
         });
 
         JsBarcode(`#${id}_barcode`, item.ean, {
@@ -259,8 +257,6 @@ const write_pdf = (name) => {
     doc.save(`${settings['filename']}${date.getDate()}-${date.getMonth()}${settings['file-ending']}`);
 }
 
-
-
 let get_fields_from_html = (item) => {
     //Returns an array with the data fetched from the html
     // [name, plu, ean, image_url, active]
@@ -301,6 +297,7 @@ let save_data = () =>{
     document.body.removeChild(download_anchor);
     
 }
+
 let save_active = () =>{
     // Use a data-URI anchor to create a downloadable file
     let format_csv = (str_arr) => {
@@ -334,19 +331,27 @@ let save_active = () =>{
     
 }
 
+const open_dialog = (dialog_id) =>{
+    let dialog = document.querySelector(`#${dialog_id}`);
+    window_stack.push(dialog);
+    dialog.classList.remove('hidden');
+    dialog.focus();
+}
+
 let load_window_id = '#data_file_dialog';
 const show_load_window = () =>{
-    console.log('hello')
     let dialog = document.querySelector(load_window_id);
     window_stack.push(dialog)
     dialog.classList.remove('hidden');
     dialog.focus();
 }
-
+/*
+This should be safe to delete
 const close_load_window = () =>{
     let dialog = document.querySelector(load_window_id);
     dialog.classList.add('hidden');
 }
+*/
 
 const close_window = () => {
     let current = window_stack.pop();

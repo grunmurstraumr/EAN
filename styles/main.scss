@@ -174,7 +174,8 @@ header{
 
 }
 
-#data_file_dialog{
+/*#data_file_dialog*/
+.dialog{
     $input_height: 45px;
     $input_width: 45px;
     display: flex;
@@ -201,7 +202,6 @@ header{
             font-size: 24pt;
         }
         input{
-
             display: inline;
         }
         button{
