@@ -1,0 +1,84 @@
+@media print {
+  body {
+    padding: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow: visible !important;
+  }
+  header {
+    background-color: transparent;
+    position: static;
+  }
+  footer {
+    background-color: transparent;
+  }
+  #command_row button {
+    display: none !important;
+  }
+  #items {
+    display: inline;
+    width: 100%;
+    overflow: visible !important;
+  }
+  .item {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: black;
+    position: relative;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    border: 2px solid black;
+    text-align: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    overflow: hidden;
+    /*display: inline-block;*/
+    text-align: center;
+    page-break-after: auto;
+    page-break-before: auto;
+    page-break-inside: avoid;
+    width: 25vw;
+    margin: 0;
+    height: 235px;
+  }
+  .item h2 {
+    font-size: 16pt;
+    z-index: 3;
+  }
+  .item p {
+    font-size: 12pt;
+    z-index: 2;
+  }
+  .item canvas {
+    padding: 0;
+    width: 22vw;
+    min-width: 50px;
+    height: 50px;
+    z-index: 1;
+    margin: 0 auto 0 auto;
+  }
+  .item img {
+    z-index: 0;
+    height: 50px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@page {
+  margin: 0.5in 0.4in 0.5in 0.4in;
+}
+/*# sourceMappingURL=print.css.map */
