@@ -17,7 +17,7 @@
             
             
             <fieldset id="data_files">
-                <div class="close_x" onclick="close_load_window()">
+                <div class="close_x" onclick="close_window()">
                         <span></span>
                         <span></span>
                 </div>
@@ -27,6 +27,13 @@
                 <button onclick="">Ladda</button>
             </fieldset>
         
+        </div>
+        <div class="hidden" id="add_file_dialog">
+            <fieldset id="add_new_form">
+                <div class="close_x" onclick="close_window()">
+
+                </div>
+            </fieldset>
         </div>
         <!--
         </div class="" id="config_file_dialog">
@@ -43,7 +50,7 @@
         -->
         <div id="items"></div>
         <footer id="command_row">
-            <button onclick="show_load_window()">Ladda sortiment</button>
+            <button id="command_load_data_btn" onclick="">Ladda sortiment</button>
             <button id="printable_btn" onclick="print_page()">Skriv ut</button>
             <button onclick="save_data()">Spara</button>
             <button onclick="clear_all()">Rensa</button>

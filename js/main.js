@@ -51,7 +51,20 @@ class Entry{
         //Return an array with the data fields
         return [this.name, this.plu, this.ean, this.image, this.active];
     }
+}
 
+class Dialog{
+    // Maybe this can be used to render itself as well based on input
+    constructor(name, id){
+        this.prop_name = name;
+        this.prop_id = id;
+    }
+    set id (new_id){
+        this.prop_id = new_id;
+    }
+    get id (){
+        return `#${this.prop_id}`;
+    }
 
 }
 
@@ -162,12 +175,7 @@ function load_config(){
             settings[key_val[0]]= key_val[1];
         }
     }
-    data.sort((a,b)=>{
-        if (a.name > b.name)
-            return 1
-        else
-            return -1});
-    render();
+
 }
 
 const print_page = () => {
@@ -255,20 +263,30 @@ let save_active = () =>{
     
 }
 
+
+let dialogs = [ new Dialog('data', 'data_file_dialog'),
+                new Dialog('add_new', 'add_file_dialog')]
 let load_window_id = '#data_file_dialog';
 const show_load_window = () =>{
-    console.log('hello')
     let dialog = document.querySelector(load_window_id);
     window_stack.push(dialog)
     dialog.classList.remove('hidden');
     dialog.focus();
 }
 
+const show_dialog = dialog_id => {
+    let dialog = document.querySelector(`#${dialog_id}`);
+    window_stack.push(dialog);
+    dialog.classList.remove('hidden');
+    dialog.focus();
+
+}
+/*
 const close_load_window = () =>{
     let dialog = document.querySelector(load_window_id);
     dialog.classList.add('hidden');
 }
-
+*/
 const close_window = () => {
     let current = window_stack.pop();
     current.classList.add('hidden');
@@ -281,17 +299,20 @@ const clear_all = () =>{
     data = [];
 }
 
-const load_window_escape_listener = (event) =>{
-    if (event.key === 'Escape'){
+const escape_listener = (event) =>{
+    if(event.key === 'Escape'){
         event.preventDefault();
         close_window();
     }
 }
 const setup_event_listeners = ()=>{
-    document.addEventListener('keydown', load_window_escape_listener)
+    document.addEventListener('keydown', escape_listener)
     document.querySelector('#data_files button').addEventListener('click',() => {
         load_data();
         close_window();
+    })
+    document.querySelector('#command_load_data_btn').addEventListener('click', () =>{
+        show_dialog('data_file_dialog');
     })
     
 }
