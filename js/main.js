@@ -1,4 +1,5 @@
 let window_stack = [];
+let print_mode = true;
 const settings = {
     'fallback-image': './images/placeholder.png',
     'page-title': 'Självscanningskoder',
@@ -54,11 +55,19 @@ class Entry{
 
 }
 
-strToBool = str => {
+const strToBool = str => {
     const truthy = ['true', '1'];
     return truthy.indexOf(str.toLowerCase()) !== -1;
 }
 
+const assign_image = (URL) =>{
+    let image = new Image();
+    image.onerror = () =>{
+        image.src = settings['fallback-image'];
+    }
+    image.src = URL;
+    return image;
+}
 function image_exists(image_url){
     let http = new XMLHttpRequest();
     http.open('HEAD', image_url, false);
@@ -76,10 +85,7 @@ function render(){
         let id = item.name.replace(/[\s\/]/g, '-') // Replaces spaces with hyphens
         html.classList.add('item');
         img = document.createElement('img');
-        if (image_exists(item.image))
-            img.src = item.image;
-        else
-            img.src = settings['fallback-image'];
+        img = assign_image(item.image);
         html.innerHTML =`
             <h2> ${item.name} </h2>
             <p> ${item.plu} </p>
@@ -164,102 +170,17 @@ function load_config(){
     render();
 }
 
-const write_pdf = (name) => {
-    let doc = new jsPDF({unit: settings['unit'],
-        orientation: settings['orientation']});
-    let list_of_active = document.querySelectorAll('.active');
-    let row_offset = settings['page-margin'];
-    let row_height = settings['card-height'] + settings['card-margin'];
-    doc.text(settings['page-title'], settings['page-width']/2 - settings['page-title'].length, row_offset);
-    row_offset += settings['text-line-height'] + settings['card-margin'];
-    for (let i = 0; i < list_of_active.length; ++i){
-        let current = list_of_active[i];
-        let column = i % 4
-        if (column === 0){
-            if (i !== 0)
-                row_offset += settings['card-height'] + settings['card-margin']
-        }
-        if (row_offset + row_height > settings['page-height'] ){
-            doc.addPage();
-            row_offset = settings['page-margin'];
-        }
-        // Draw the border
-        let current_left_offset = settings['page-margin'] + 
-            column *(settings['card-width'] + 
-            settings['card-margin']); // + 
-            //settings['card-padding'];
-        let component_height_offset = row_offset + settings['card-padding'];
-        doc.rect(
-            current_left_offset - settings['card-padding'], 
-            row_offset,
-            settings['card-width'],
-            settings['card-height'],
-            'S')
-        let text = current.querySelector('h2').innerHTML;
-        if (text.length > settings['heading-font-size'])
-            doc.setFontSize((settings['card-width']/text.length)*5)
-        else
-            doc.setFontSize(settings['heading-font-size'])
-        
-        // compute center
-        let text_width = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-        let offset = (settings['card-width'] - settings['card-padding']*2 - text_width)/2;
-        doc.text(text, 
-            current_left_offset + offset,
-            component_height_offset,
-            {'baseline': 'top'});
-        component_height_offset += settings['text-line-height'];
-        // Write plu
-        doc.setFontSize(settings['plu-font-size']);
-        let plu = current.querySelector('p').innerHTML 
-        let plu_width = doc.getStringUnitWidth(plu) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-        let plu_offset = (settings['card-width'] - settings['card-padding']*2 - plu_width)/2;
-        doc.text(plu, 
-            current_left_offset + plu_offset,
-            component_height_offset,
-            {'baseline': 'top'});
-        component_height_offset += settings['text-line-height'];
-        let image_elem = current.querySelector('img');
-        let image_url = image_elem['src'];
-        //console.log(image_url);
-
-        try {
-            doc.addImage(image_elem,
-                'JPEG',
-                current_left_offset, 
-                component_height_offset, 
-                settings['image-width'], 
-                settings['image-height']);
-        }
-        catch(error){
-            // Catch error but nothing needs to be done.
-            console.log(error)
-            // TODO add default placeholder image and uncomment following lines
-            
-            placeholder = document.createElement('IMG');
-            placeholder.setAttribute('src', './images/placeholder.png');
-            console.log(placeholder);
-            doc.addImage(placeholder,
-            'PNG',
-            current_left_offset, 
-            component_height_offset, 
-            settings['image-width'], 
-            settings['image-height']);
-            
-        }
-        component_height_offset += settings['image-height']
-        doc.addImage(current.querySelector('canvas'),
-            current_left_offset,
-            component_height_offset,
-            settings['barcode-width'],
-            settings['barcode-height']);
-
+const print_page = () => {
+    let selected = document.querySelectorAll('.active');
+    let unselected = document.querySelectorAll('.item:not(.active)');
+    for (let item of unselected){
+        item.classList.add('hidden');
     }
-    let date = new Date();
-    doc.save(`${settings['filename']}${date.getDate()}-${date.getMonth()}${settings['file-ending']}`);
+    window.print();  
+    for (let item of unselected){
+        item.classList.remove('hidden');
+    }
 }
-
-
 
 let get_fields_from_html = (item) => {
     //Returns an array with the data fetched from the html

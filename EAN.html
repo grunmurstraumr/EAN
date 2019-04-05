@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv">
     <head>
         <script src="./js/lib/JsBarcode.all.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
         <script src="./js/main.js"></script>
         <script src="./js/lib/html2canvas.min.js"></script>
-        <link rel="stylesheet" href="./styles/main.css" />
+        <link rel="stylesheet" type="text/css" href="./styles/main.css" />
+        <link rel="stylesheet" type="text/css" href="./styles/print.css"/>
+        <title>Självscanningskoder</title>
     </head>
     <body>
         <header>
@@ -42,7 +44,7 @@
         <div id="items"></div>
         <footer id="command_row">
             <button onclick="show_load_window()">Ladda sortiment</button>
-            <button onclick="write_pdf()">Skriv ut (pdf)</button>
+            <button id="printable_btn" onclick="print_page()">Skriv ut</button>
             <button onclick="save_data()">Spara</button>
             <button onclick="clear_all()">Rensa</button>
             <!--<button onclick="show_settings_window()">Inställningar</button>-->
