@@ -289,6 +289,10 @@ const load_window_escape_listener = (event) =>{
 }
 const setup_event_listeners = ()=>{
     document.addEventListener('keydown', load_window_escape_listener)
+    document.querySelector('#data_files button').addEventListener('click',() => {
+        load_data();
+        close_window();
+    })
     
 }
 
@@ -298,5 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // after a specified time
     // setInterval()
     setup_event_listeners();
+    show_load_window();
 });
 
