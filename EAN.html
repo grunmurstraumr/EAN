@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="sv">
     <head>
+        <meta charset='utf-8'>
         <script src="./js/lib/JsBarcode.all.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
         <script src="./js/main.js"></script>
@@ -24,7 +25,6 @@
                         
                 <legend>Data</legend>
                 <input type='file' id='datafile'/>
-                <button onclick="">Ladda</button>
             </fieldset>
         
         </div>
@@ -50,10 +50,9 @@
         -->
         <div id="items"></div>
         <footer id="command_row">
-            <button id="command_load_data_btn" onclick="">Ladda sortiment</button>
-            <button id="printable_btn" onclick="print_page()">Skriv ut</button>
-            <button onclick="save_data()">Spara</button>
-            <button onclick="clear_all()">Rensa</button>
+            <button id="load_data_btn">Ladda sortiment</button>
+            <button id="printable_btn">Skriv ut</button>
+            <button id="save_data_btn">Spara</button>
             <!--<button onclick="show_settings_window()">Inställningar</button>-->
 
         </footer>

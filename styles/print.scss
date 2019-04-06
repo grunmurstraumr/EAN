@@ -21,6 +21,7 @@
     body{
         overflow: visible !important;
         line-height: 125%;
+
     }
     header{
         background-color: transparent;
@@ -28,6 +29,10 @@
         color: black;
         font-size: 22pt;
     }
+
+    .no-print{
+        display: none !important;
+      }
     footer{
         display: none !important;
     }
@@ -40,6 +45,7 @@
         display: inline;
         overflow: visible !important;
         padding-left: $page_margin_l;
+        padding: 25mm;
     }
     .item{
         font-family: 'Noto Sans JP', sans-serif;
