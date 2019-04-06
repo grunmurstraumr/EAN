@@ -1,5 +1,6 @@
-let window_stack = [];
-let print_mode = true;
+/*************************************************************************
+* Settings
+*************************************************************************/
 const settings = {
     'fallback-image': './images/placeholder.png',
     'page-title': 'Självscanningskoder',
@@ -30,8 +31,29 @@ const settings = {
     'font-conversion-factor': 0.353, // 1/72 inch in millimeter
     'default-save-filename': 'streckkodslista.csv',
 }
+settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] + settings['image-height']+ 2*settings['text-line-height'];
 
-settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] + settings['image-height']+ 2*settings['text-line-height']
+
+/*************************************************************************
+* File handling
+*************************************************************************/
+
+
+
+/*************************************************************************
+* Windowing
+*************************************************************************/
+let window_stack = [];
+
+/*************************************************************************
+* Rendering
+*************************************************************************/
+
+
+
+
+
+
 let data = []
 let find_data = (value, key) =>{
     //Searches in data for entry on specified key-value pair
@@ -264,15 +286,7 @@ let save_active = () =>{
 }
 
 
-let dialogs = [ new Dialog('data', 'data_file_dialog'),
-                new Dialog('add_new', 'add_file_dialog')]
-let load_window_id = '#data_file_dialog';
-const show_load_window = () =>{
-    let dialog = document.querySelector(load_window_id);
-    window_stack.push(dialog)
-    dialog.classList.remove('hidden');
-    dialog.focus();
-}
+let dialogs = {'load_dialog' : 'data_file_dialog',};
 
 const show_dialog = dialog_id => {
     let dialog = document.querySelector(`#${dialog_id}`);
@@ -281,20 +295,12 @@ const show_dialog = dialog_id => {
     dialog.focus();
 
 }
-/*
-const close_load_window = () =>{
-    let dialog = document.querySelector(load_window_id);
-    dialog.classList.add('hidden');
-}
-*/
 const close_window = () => {
     let current = window_stack.pop();
     current.classList.add('hidden');
 }
 
 const clear_all = () =>{
-    console.log('clear called');
-    console.log(document.querySelector('#items'));
     document.querySelector('#items').innerHTML = "";
     data = [];
 }
