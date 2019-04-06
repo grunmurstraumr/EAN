@@ -1,4 +1,35 @@
 /*************************************************************************
+* Class definitions
+*************************************************************************/
+class Entry{
+    constructor(name, plu, ean, image_url, active){
+        this.name = name;
+        this.plu = plu,
+        this.ean = ean
+        this.image = image_url
+        this.active = active
+    }
+    fields(){
+        //Return an array with the data fields
+        return [this.name, this.plu, this.ean, this.image, this.active];
+    }
+}
+
+class Dialog{
+    // Maybe this can be used to render itself as well based on input
+    constructor(name, id){
+        this.prop_name = name;
+        this.prop_id = id;
+    }
+    set id (new_id){
+        this.prop_id = new_id;
+    }
+    get id (){
+        return `#${this.prop_id}`;
+    }
+
+}
+/*************************************************************************
 * Settings
 *************************************************************************/
 const settings = {
@@ -37,7 +68,7 @@ settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] 
 /*************************************************************************
 * File handling
 *************************************************************************/
-
+let data = []
 
 
 /*************************************************************************
@@ -50,50 +81,25 @@ let window_stack = [];
 *************************************************************************/
 
 
+/*************************************************************************
+* Utility functions
+*************************************************************************/
+const strToBool = str => {
+    const truthy = ['true', '1'];
+    return truthy.indexOf(str.toLowerCase()) !== -1;
+}
 
 
 
 
-let data = []
 let find_data = (value, key) =>{
     //Searches in data for entry on specified key-value pair
     return data.find((element) =>{
         return element[key].trim() === value.trim()
     });
 }
-class Entry{
-    constructor(name, plu, ean, image_url, active){
-        this.name = name;
-        this.plu = plu,
-        this.ean = ean
-        this.image = image_url
-        this.active = active
-    }
-    fields(){
-        //Return an array with the data fields
-        return [this.name, this.plu, this.ean, this.image, this.active];
-    }
-}
 
-class Dialog{
-    // Maybe this can be used to render itself as well based on input
-    constructor(name, id){
-        this.prop_name = name;
-        this.prop_id = id;
-    }
-    set id (new_id){
-        this.prop_id = new_id;
-    }
-    get id (){
-        return `#${this.prop_id}`;
-    }
 
-}
-
-const strToBool = str => {
-    const truthy = ['true', '1'];
-    return truthy.indexOf(str.toLowerCase()) !== -1;
-}
 
 const assign_image = (URL) =>{
     let image = new Image();
@@ -103,13 +109,7 @@ const assign_image = (URL) =>{
     image.src = URL;
     return image;
 }
-function image_exists(image_url){
-    let http = new XMLHttpRequest();
-    http.open('HEAD', image_url, false);
-    http.send();
 
-    return http.status != 404;
-}
 function render(){
     document.getElementById('items').innerHTML = "";
     let root = document.getElementById('items');
