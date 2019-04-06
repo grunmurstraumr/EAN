@@ -11,6 +11,7 @@ class Entry{
         this.active = active;
         this.changed = true; //Flag to detect if redrawing would be necessary
         this.id = name.replace(/[\s\/]/g, '-'); // Replace spaces with hyphens
+        this.node;
     }
     fields(){
         //Return an array with the data fields
@@ -36,48 +37,35 @@ class Entry{
     toHtml(parent){
         // If nothing is changed just skip the entire function.
         if (this.changed){
-            try {
-                let id;
-                try {
-                    id = this.old_id;
-                }
-                catch(error){
-                    id = this.id;
-                }
-                let self_HTML = document.querySelector(`#${id}`);
-                parent.removeChild(self_HTML);
-            }
-            catch(error){
-                // Assume that only the removal of self failed and silence error.
-            }
-            finally{
-                let html = document.createElement('div');
-                html.classList.add('item');
-                if (strToBool(this.active))
-                    html.classList.add('active');
-                let img = document.createElement('img');
-                img = assign_image(this.image);
-                html.innerHTML = `
-                    <h2> ${this.name} </h2>
-                    <p> ${this.plu}</p>
-                    `
-                let canvas = document.createElement('canvas');
-                canvas.id = `${this.id}_barcode`;
-                html.appendChild(img);
-                html.appendChild(canvas);
-                html.addEventListener('click', () => {
-                    html.classList.toggle('active');
-                    this.active = strToBool(this.active) ? 'false' : 'true'; //Toggle true/false for active 'flag'
-                    console.log(this); // DEBUG. Remove for production
-                });
-                parent.appendChild(html);
-                JsBarcode(`#${this.id}_barcode`, this.ean, {
-                    height: settings['jsbarcode-height'],
-                    width: settings['jsbarcode-width'],
-                    displayValue: settings['display-value'],
-                });
-                this.changed = false;
-            }
+            if (this.node)
+                parent.removeChild(this.node);
+
+            let html = document.createElement('div');
+            html.classList.add('item');
+            if (strToBool(this.active))
+                html.classList.add('active');
+            let img = document.createElement('img');
+            img = assign_image(this.image);
+            html.innerHTML = `
+                <h2> ${this.name} </h2>
+                <p> ${this.plu}</p>
+                `
+            let canvas = document.createElement('canvas');
+            canvas.id = `${this.id}_barcode`;
+            html.appendChild(img);
+            html.appendChild(canvas);
+            html.addEventListener('click', () => {
+                html.classList.toggle('active');
+                this.active = strToBool(this.active) ? 'false' : 'true'; //Toggle true/false for active 'flag'
+            });
+            parent.appendChild(html);
+            JsBarcode(`#${this.id}_barcode`, this.ean, {
+                height: settings['jsbarcode-height'],
+                width: settings['jsbarcode-width'],
+                displayValue: settings['display-value'],
+            });
+            this.node = html;
+            this.changed = false;
         }
     }
 }
@@ -87,6 +75,7 @@ class Dialog{
     constructor(name, id){
         this.prop_name = name;
         this.prop_id = id;
+
     }
     set id (new_id){
         this.prop_id = new_id;
@@ -96,6 +85,10 @@ class Dialog{
     }
 
     toHtml(parent){
+
+    }
+
+    show(){
 
     }
 
@@ -282,7 +275,6 @@ function renderAll(){
 }
 
 const print_page = () => {
-    let selected = document.querySelectorAll('.active');
     let unselected = document.querySelectorAll('.item:not(.active)');
     // Hide all elements not selected
     for (let item of unselected){
@@ -336,6 +328,11 @@ const setup_event_listeners = ()=>{
     });
     document.querySelector('#save_data_btn').addEventListener('click', () => {
         save_data();
+    });
+    document.querySelectorAll('.close_x').forEach( (element) => {
+        element.addEventListener('click', () =>{
+            close_top_window();
+        });
     });
 }   
 document.addEventListener('DOMContentLoaded', () => {
