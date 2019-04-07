@@ -315,11 +315,8 @@ const setup_event_listeners = ()=>{
     });
 }   
 document.addEventListener('DOMContentLoaded', () => {
-    // Set a periodic interval to communicate with server that 
-    // the application is alive. If not the server should quit
-    // after a specified time
-    // setInterval()
     setup_event_listeners();
     show_dialog('data_file_dialog');
+    //show_dialog('add_data_dialog');
 });
 

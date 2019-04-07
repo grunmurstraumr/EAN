@@ -38,14 +38,35 @@
                 <legend>Lägg till</legend>
                 <label for="add_data_name">Benämning</label>
                 <input type="text" id="add_data_name">
+                
                 <label for="add_data_plu">PLU</label>
                 <input type="text" id="add_data_plu">
+                
                 <label for="add_data_ean">EAN</label>
                 <input type="text" id="add_data_ean">
-                <label for="add_data_image">Bild</label>
-                <input type="file" id="add_data_image">
+                
+                <label for="add_data_image">Bild
+                    <div class="container">
+                        <input type="checkbox" id="url_file_toggle" class="hidden_checkbox">
+                        <span id="url_file_toggle_switch"></span>
+                        <label for="add_image_file">Fil</label>
+                        <input type="file" id="add_image_file">
+                        
+                        <label for="add_image_url">URL</label>
+                        <input type="text" id="add_image_url">
+                    </div>
+                </label>
+
                 <label for="add_data_active_check">Aktiv</label>
-                <input type="checkbox">
+                <div class="container">
+                    <input type="checkbox"  id="add_data_active_check" class="hidden_checkbox">
+                    <div class="custom_checkbox"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M10, 40 L 40, 90 C 65, 20 90, 10 100, 0"></path> <!-- x,y x,y ....-->
+                    </svg>
+
+                </div>
+
                 <button onclick="add_new()">Skapa</button>
             </fieldset>
         </div>
@@ -67,7 +88,7 @@
             <button id="load_data_btn">Ladda sortiment</button>
             <button id="printable_btn">Skriv ut</button>
             <button id="save_data_btn">Spara</button>
-            <button id="add_data_btn">Lägg till</button>
+            <!--<button id="add_data_btn">Lägg till</button>-->
             <!--<button onclick="show_settings_window()">Inställningar</button>-->
 
         </footer>
