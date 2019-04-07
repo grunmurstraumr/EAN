@@ -69,30 +69,6 @@ class Entry{
         }
     }
 }
-
-class Dialog{
-    // Maybe this can be used to render itself as well based on input?
-    constructor(name, id){
-        this.prop_name = name;
-        this.prop_id = id;
-
-    }
-    set id (new_id){
-        this.prop_id = new_id;
-    }
-    get id (){
-        return `#${this.prop_id}`;
-    }
-
-    toHtml(parent){
-
-    }
-
-    show(){
-
-    }
-
-}
 /*************************************************************************
 * Settings
 *************************************************************************/
