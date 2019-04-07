@@ -305,6 +305,9 @@ const setup_event_listeners = ()=>{
     document.querySelector('#save_data_btn').addEventListener('click', () => {
         save_data();
     });
+    document.querySelector('#add_data_btn').addEventListener('click', () =>{
+        show_dialog('add_data_dialog');
+    })
     document.querySelectorAll('.close_x').forEach( (element) => {
         element.addEventListener('click', () =>{
             close_top_window();
