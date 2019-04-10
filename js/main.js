@@ -7,13 +7,11 @@ class DataContainer{
     //  * It only allows pushing unique items
     //  * Sort has a built in comparison function
     constructor(){
-        this.data = []
+        this.data = [];
     }
     push(param){
         //assume param is of type Entry
         // Check if item is already stored
-        console.log(param.ean == 2092422700000);
-        console.log(this.data.filter(element => {element.ean === param.ean}))
         if(this.data.filter(element => {element.ean === param.ean}).length === 0){
             this.data.push(param);
         }
@@ -43,6 +41,10 @@ class DataContainer{
             return this.data[param_index];
         else
             throw "Index out of range";
+    }
+
+    clear(){
+        this.data = [];
     }
 }
 class Entry{
@@ -169,7 +171,6 @@ const add_new = () =>{
     form['add_image_url'].value, 
     form['add_data_active_check'].checked)
     );
-    console.log(`Active check ${form['add_data_active_check'].checked}`)
     data.sort();
     renderAll();
     form.reset();
@@ -232,7 +233,7 @@ function load_config(){
 
 const clear_all = () =>{
     document.querySelector('#items').innerHTML = "";
-    data = [];
+    data.clear();
 }
 
 let save_data = () =>{
@@ -299,12 +300,9 @@ const close_top_window = () => {
 * Rendering
 *************************************************************************/
 function renderAll(){
-    console.log('*****************************')
-    console.log(`Render all called with data: \n${data}`);
     let root = document.getElementById('items');
     //root.innerHTML = "";
     for (let i = 0; i < data.length; ++i){
-        console.log(`Rendering ${i}`);
         data.getIndex(i).toHtml(root);
     }
 }
