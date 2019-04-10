@@ -1,17 +1,69 @@
 /*************************************************************************
 * Class definitions
 *************************************************************************/
-
+class DataContainer{
+    // The dataContainer is a thin wrapper around an array to provide some additional functionality
+    // for the purposes of this application. 
+    //  * It only allows pushing unique items
+    //  * Sort has a built in comparison function
+    constructor(){
+        this.data = []
+    }
+    push(param){
+        //assume param is of type Entry
+        // Check if item is already stored
+        console.log(param.ean == 2092422700000);
+        console.log(this.data.filter(element => {element.ean === param.ean}))
+        if(this.data.filter(element => {element.ean === param.ean}).length === 0){
+            this.data.push(param);
+        }
+        else
+            throw "Item already exists";
+    }
+    sort(){
+        this.data.sort((a,b)=>{
+            // Sort by name
+            if (a.name > b.name)
+                return 1
+            else
+                return -1
+        })
+    }
+    find(value, key){
+        //Searches in data for entry on specified key-value pair
+        return this.data.find((element) =>{
+            return element[key].trim() === value.trim()
+        });
+    }
+    get length(){
+        return this.data.length;
+    }
+    getIndex(param_index){
+        if (param_index < this.data.length)
+            return this.data[param_index];
+        else
+            throw "Index out of range";
+    }
+}
 class Entry{
-    constructor(name, plu, ean, image_url, active){
+    constructor(name, plu, ean, image_url, pactive){
         this.name = name;
         this.plu = plu;
         this.ean = ean;
         this.image = image_url;
-        this.active = active;
+        if (!this.image){
+            this.image = settings['fallback-image'];
+        }
+        if (typeof pactive === 'boolean')
+            this.active = pactive;
+        else if(typeof pactive === 'string')
+            this.active = strToBool(pactive);
+        else
+            this.active = false;
         this.changed = true; //Flag to detect if redrawing would be necessary
         this.id = name.replace(/[\s\/]/g, '-'); // Replace spaces with hyphens
         this.node;
+
     }
     fields(){
         //Return an array with the data fields
@@ -36,37 +88,36 @@ class Entry{
     }
     toHtml(parent){
         // If nothing is changed just skip the entire function.
-        if (this.changed){
-            if (this.node)
-                parent.removeChild(this.node);
+    
+        if (this.node)
+            parent.removeChild(this.node);
 
-            let html = document.createElement('div');
-            html.classList.add('item');
-            if (strToBool(this.active))
-                html.classList.add('active');
-            let img = document.createElement('img');
-            img = assign_image(this.image);
-            html.innerHTML = `
-                <h2> ${this.name} </h2>
-                <p> ${this.plu}</p>
-                `
-            let canvas = document.createElement('canvas');
-            canvas.id = `${this.id}_barcode`;
-            html.appendChild(img);
-            html.appendChild(canvas);
-            html.addEventListener('click', () => {
-                html.classList.toggle('active');
-                this.active = strToBool(this.active) ? 'false' : 'true'; //Toggle true/false for active 'flag'
-            });
-            parent.appendChild(html);
-            JsBarcode(`#${this.id}_barcode`, this.ean, {
-                height: settings['jsbarcode-height'],
-                width: settings['jsbarcode-width'],
-                displayValue: settings['display-value'],
-            });
-            this.node = html;
-            this.changed = false;
-        }
+        let html = document.createElement('div');
+        html.classList.add('item');
+        if (this.active)
+            html.classList.add('active');
+        let img = document.createElement('img');
+        img = assign_image(this.image);
+        html.innerHTML = `
+            <h2> ${this.name} </h2>
+            <p> ${this.plu}</p>
+            `
+        let canvas = document.createElement('canvas');
+        canvas.id = `${this.id}_barcode`;
+        html.appendChild(img);
+        html.appendChild(canvas);
+        html.addEventListener('click', () => {
+            html.classList.toggle('active');
+            this.active = !this.active; //Toggle true/false for active 'flag'
+        });
+        parent.appendChild(html);
+        JsBarcode(`#${this.id}_barcode`, this.ean, {
+            height: settings['jsbarcode-height'],
+            width: settings['jsbarcode-width'],
+            displayValue: settings['display-value'],
+        });
+        this.node = html;
+        this.changed = false;
     }
 }
 /*************************************************************************
@@ -108,7 +159,21 @@ settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] 
 /*************************************************************************
 * File handling
 *************************************************************************/
-let data = []
+let data = new DataContainer();
+
+const add_new = () =>{
+    let form = document.querySelector('#add_new_form');
+    data.push(new Entry(form['add_data_name'].value, 
+    form['add_data_plu'].value, 
+    form['add_data_ean'].value, 
+    form['add_image_url'].value, 
+    form['add_data_active_check'].checked)
+    );
+    console.log(`Active check ${form['add_data_active_check'].checked}`)
+    data.sort();
+    renderAll();
+    form.reset();
+}
 
 const assign_image = (URL) =>{
     let image = new Image();
@@ -140,11 +205,7 @@ function load_data(){
             if (name && plu && ean)
                 data.push(new Entry( name, plu, image_url, ean, active));
         }
-        data.sort((a,b)=>{
-            if (a.name > b.name)
-                return 1
-            else
-                return -1});
+        data.sort();
         renderAll();
 
     }
@@ -206,12 +267,7 @@ let save_data = () =>{
     
 }
 
-let find_data = (value, key) =>{
-    //Searches in data for entry on specified key-value pair
-    return data.find((element) =>{
-        return element[key].trim() === value.trim()
-    });
-}
+
 
 let get_fields_from_html = (item) => {
     //Returns an array with the data fetched from the html
@@ -243,10 +299,13 @@ const close_top_window = () => {
 * Rendering
 *************************************************************************/
 function renderAll(){
-    document.getElementById('items').innerHTML = "";
+    console.log('*****************************')
+    console.log(`Render all called with data: \n${data}`);
     let root = document.getElementById('items');
+    //root.innerHTML = "";
     for (let i = 0; i < data.length; ++i){
-        data[i].toHtml(root);
+        console.log(`Rendering ${i}`);
+        data.getIndex(i).toHtml(root);
     }
 }
 
@@ -273,6 +332,7 @@ const strToBool = str => {
     const truthy = ['true', '1'];
     return truthy.indexOf(str.toLowerCase()) !== -1;
 }
+
 
 /*************************************************************************
 * Event handlers
@@ -305,18 +365,24 @@ const setup_event_listeners = ()=>{
     document.querySelector('#save_data_btn').addEventListener('click', () => {
         save_data();
     });
-    /*document.querySelector('#add_data_btn').addEventListener('click', () =>{
+    document.querySelector('#add_data_btn').addEventListener('click', () =>{
         show_dialog('add_data_dialog');
-    })*/
+    });
+
+    document.querySelector('#add_data_dialog form ').addEventListener('submit', (event) => {
+        event.preventDefault();
+        add_new();
+    });
     document.querySelectorAll('.close_x').forEach( (element) => {
         element.addEventListener('click', () =>{
             close_top_window();
         });
     });
+
 }   
 document.addEventListener('DOMContentLoaded', () => {
     setup_event_listeners();
-    show_dialog('data_file_dialog');
-    //show_dialog('add_data_dialog');
+    //show_dialog('data_file_dialog');
+    show_dialog('add_data_dialog');
 });
 

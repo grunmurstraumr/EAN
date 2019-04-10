@@ -184,7 +184,7 @@ header h1 {
   z-index: 4;
 }
 
-.dialog fieldset {
+.dialog form {
   position: relative;
   background-color: white;
   border-radius: 10px;
@@ -202,18 +202,22 @@ header h1 {
           box-shadow: 3px 3px 5px black;
 }
 
-.dialog fieldset legend {
+.dialog form legend {
   padding-top: 20px;
   font-size: 24pt;
 }
 
-.dialog fieldset .container {
+.dialog form .container {
   position: relative;
   top: auto;
-  height: auto;
+  height: 100px;
 }
 
-.dialog fieldset .container input[type=checkbox] {
+.dialog form .container span label {
+  display: block;
+}
+
+.dialog form .container input[type=checkbox] {
   position: relative;
   top: 0;
   margin: 0;
@@ -226,16 +230,21 @@ header h1 {
   z-index: 5;
 }
 
-.dialog fieldset .container input[type=checkbox]:checked ~ svg {
+.dialog form .container input[type=checkbox]:checked ~ svg {
   opacity: 1;
 }
 
-.dialog fieldset .container input[type=checkbox]:hover ~ .custom_checkbox {
+.dialog form .container input[type=checkbox]:hover ~ .custom_checkbox {
   -webkit-box-shadow: 0px 0px 5px blue;
           box-shadow: 0px 0px 5px blue;
 }
 
-.dialog fieldset .container .custom_checkbox {
+.dialog form button:hover, .dialog form input[type=submit]:hover {
+  -webkit-filter: brightness(125%);
+          filter: brightness(125%);
+}
+
+.dialog form .custom_checkbox {
   position: absolute;
   top: 0;
   display: block;
@@ -247,113 +256,112 @@ header h1 {
   opacity: 1;
 }
 
-.dialog fieldset .container .custom_checkbox:hover {
+.dialog form .custom_checkbox:hover {
   -webkit-filter: brightness(125%);
           filter: brightness(125%);
 }
 
-.dialog fieldset .container svg {
+.dialog form svg {
   position: absolute;
   top: 0;
   left: 0;
   width: 30px;
   height: 30px;
-  stroke: blue;
+  stroke: red;
   stroke-width: 12;
   fill: transparent;
   opacity: 0;
 }
 
-.dialog fieldset #url_file_toggle {
+.dialog #url_file_toggle {
   position: absolute;
   right: 0;
-  opacity: 1;
-  width: 80px;
-  height: 40px;
+  opacity: 0;
+  width: 60px;
+  height: 20px;
 }
 
-.dialog fieldset #url_file_toggle ~ .custom_checkbox {
+.dialog #url_file_toggle ~ .custom_checkbox {
   right: 0;
 }
 
-.dialog fieldset #url_file_toggle:checked ~ #url_file_toggle_switch::after {
-  -webkit-transform: translate(100%);
-          transform: translate(100%);
+.dialog #url_file_toggle:checked ~ #url_file_toggle_switch::after {
+  -webkit-transform: translate(40px);
+          transform: translate(40px);
 }
 
-.dialog fieldset #url_file_toggle:checked ~ #add_image_file, .dialog fieldset #url_file_toggle label {
+.dialog #url_file_toggle:checked ~ #add_image_file_container {
   display: none;
 }
 
-.dialog fieldset #url_file_toggle:checked ~ #add_image_file label, .dialog fieldset #url_file_toggle label label {
-  display: none;
-}
-
-.dialog fieldset #url_file_toggle:checked ~ #add_image_url {
+.dialog #url_file_toggle:checked ~ #add_image_url_container {
   display: block;
 }
 
-.dialog fieldset #url_file_toggle:checked ~ #add_image_url label {
-  display: block;
-}
-
-.dialog fieldset #add_image_url {
+.dialog #add_image_url_container {
   display: none;
 }
 
-.dialog fieldset #add_image_url label {
-  display: none;
+.dialog #add_image_url, .dialog #add_image_file {
+  height: 50px;
+  width: 80%;
 }
 
-.dialog fieldset #add_image_url, .dialog fieldset #add_image_file {
-  height: 75px;
+.dialog #url_file_toggle_switch, .dialog #url_file_toggle {
+  top: 80px;
 }
 
-.dialog fieldset #url_file_toggle_switch {
+.dialog #url_file_toggle_switch {
   display: block;
   position: absolute;
   right: 0;
-  height: 40px;
-  width: 80px;
+  height: 20px;
+  width: 60px;
   background-color: gray;
   border: solid 1px black;
+  -webkit-box-shadow: 1px 1px 2px black inset;
+          box-shadow: 1px 1px 2px black inset;
   border-radius: 20px;
 }
 
-.dialog fieldset #url_file_toggle_switch::after {
+.dialog #url_file_toggle_switch::after {
   content: "";
   display: block;
   position: absolute;
   top: 0;
   left: 0;
-  height: 39px;
-  width: 39px;
+  height: 19px;
+  width: 20px;
   border-radius: 50%;
-  background-color: red;
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: -webkit-transform 0.3s ease;
-  transition: transform 0.3s ease;
-  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  background-image: radial-gradient(white, darkgrey);
+  -webkit-box-shadow: 1px 1px 5px black;
+          box-shadow: 1px 1px 5px black;
+  -webkit-transition: -webkit-transform 0.1s ease-out;
+  transition: -webkit-transform 0.1s ease-out;
+  transition: transform 0.1s ease-out;
+  transition: transform 0.1s ease-out, -webkit-transform 0.1s ease-out;
 }
 
-.dialog input {
+input {
   margin: 5px;
+  padding: 5px;
   display: inline-block;
   width: 90%;
-  height: 30px;
+  height: 40px;
   border-radius: 5px;
 }
 
-.dialog input[type=button], .dialog input[type=file] {
+input[type=button], input[type=file] {
   height: 40px;
   margin: 6px;
   border-radius: 5px;
   /*border: solid 1px black;*/
 }
 
-.dialog button {
+button {
   height: 40px;
   border-radius: 5px;
+  border: solid 1px darkgrey;
   display: inline-block;
 }
 

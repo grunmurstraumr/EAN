@@ -136,7 +136,7 @@ header{
     margin: 0;
     background-color: rgba(0,0,0,0.8);
     z-index: 4;
-    fieldset{
+    form{
         position: relative;
         background-color: white;
         border-radius: 10px;
@@ -152,8 +152,10 @@ header{
         .container{
             position: relative;
             top: auto;
-            height: auto;
-
+            height: 100px;
+            & span label{
+                display: block;
+            }
             input[type=checkbox]{
                 position: relative;
                 top: 0;
@@ -171,6 +173,12 @@ header{
                 }
                 &:hover ~ .custom_checkbox{
                     box-shadow: 0px 0px 5px blue;
+                }
+            }
+        }
+            button, input[type=submit]{
+                &:hover{
+                    filter: brightness(125%);
                 }
             }
 
@@ -194,60 +202,55 @@ header{
                 left: 0;
                 width: 30px;
                 height: 30px;
-                stroke: blue;
+                stroke: red;
                 stroke-width: 12;
                 fill: transparent;
                 opacity: 0;
             }
-    }
+        }
     #url_file_toggle{
         position: absolute;
         right: 0;
-        opacity: 1;
-        width: 80px;
-        height: 40px;
+        opacity: 0;
+        width: 60px;
+        height: 20px;
         & ~ .custom_checkbox{
             right: 0;
         }
 
         &:checked ~ #url_file_toggle_switch{
             &::after{
-                transform: translate(100%);
+                transform: translate(40px);
             }
 
         }
-        &:checked ~ #add_image_file, label{
+        &:checked ~ #add_image_file_container{
             display: none;
-            label{
-                display: none;
-            }
         }
-        &:checked ~ #add_image_url{
-            label{
-                display: block;
-            }
+        &:checked ~ #add_image_url_container{
             display: block;
         }
     }
-    #add_image_url{
+    #add_image_url_container{
         display: none;
-        label{
-            display: none;
-        }
     }
 
     #add_image_url, #add_image_file{
-        height: 75px;
+        height: 50px;
+        width: 80%;
     }
-
+    #url_file_toggle_switch, #url_file_toggle{
+        top: 80px;
+    }
     #url_file_toggle_switch{
         display: block;
         position: absolute;
         right: 0;
-        height: 40px;
-        width: 80px;
+        height: 20px;
+        width: 60px;
         background-color: gray;
         border: solid 1px black;
+        box-shadow: 1px 1px 2px black inset;
         border-radius: 20px; 
         &::after{
             content: "";
@@ -255,19 +258,21 @@ header{
             position: absolute;
             top: 0;
             left: 0;
-            height: 39px;
-            width: 39px;
+            height: 19px;
+            width: 20px;
             border-radius: 50%;
-            background-color: red;
-            transition: transform 0.3s ease;
+            background-image: radial-gradient(white, darkgrey) ;
+            box-shadow: 1px 1px 5px black;
+            transition: transform 0.1s ease-out;
             }
         }
     }
         input{
             margin: 5px;
+            padding: 5px;
             display: inline-block;
             width: 90%;
-            height: 30px;
+            height: 40px;
             border-radius: 5px;
             
 
@@ -281,9 +286,10 @@ header{
         button{
             height: 40px;
             border-radius: 5px;
+            border: solid 1px darkgrey;
             display: inline-block;
         }
-    }
+    
 
 .active{
     position: relative;
