@@ -3,9 +3,8 @@
     <head>
         <meta charset='utf-8'>
         <script src="./js/lib/JsBarcode.all.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
         <script src="./js/main.js"></script>
-        <script src="./js/lib/html2canvas.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="./styles/main.css" />
         <link rel="stylesheet" type="text/css" href="./styles/print.css"/>
         <title>Självscanningskoder</title>
@@ -15,15 +14,15 @@
             <h1>Självscanningskoder</h1>
         </header>
         <div class="hidden dialog" id="data_file_dialog">
-            <fieldset id="data_files">
+            <form id="data_files">
                 <div class="close_x">
                         <span></span>
                         <span></span>
                 </div>
                         
-                <legend>Data</legend>
+                <h1>Data</h1>
                 <input type='file' id='datafile'/>
-            </fieldset>
+            </form>
         
         </div>
         <div class="hidden dialog" id="add_data_dialog">
@@ -33,7 +32,7 @@
                     <span></span>
                 </div>
 
-                <legend>Lägg till</legend>
+                <h1>Lägg till</h1>
                 <label for="add_data_name">Benämning</label>
                 <input type="text" id="add_data_name" required >
                 
@@ -42,23 +41,10 @@
                 
                 <label for="add_data_ean">EAN</label>
                 <input type="text" id="add_data_ean" required minlength=13 maxlength=13 pattern="\d*">
-                
-                <label for="add_data_image">Bild</label>
-                    <div class="container">
-                        <input type="checkbox" id="url_file_toggle" class="hidden_checkbox">
-                        <span id="url_file_toggle_switch"></span>
 
-                        <span id="add_image_file_container">
-                            <label for="add_image_file">Fil</label>
-                            <input type="file" id="add_image_file">
-                        </span>
-                        <span id="add_image_url_container">
-                            <label for="add_image_url">URL</label>
-                            <input type="text" id="add_image_url">
-                        </span>
-                    </div>
+                <label for="add_image_url">Bild URL</label>
+                <input type="text" id="add_image_url">
                 
-
                 <label for="add_data_active_check">Aktiv</label>
                 <div class="container">
                     <input type="checkbox"  id="add_data_active_check" class="hidden_checkbox">
@@ -69,31 +55,52 @@
 
                 </div>
 
-                <input type="submit" value="Skapa"></input>
+                <input type="submit" value="Spara"></input>
                 <button>Rensa</button>
             </form>
         </div>
-        <!--
-        </div class="" id="config_file_dialog">
-            <div class="close_x" onclick="">
-                <span></span>
-                <span></span>
-            </div>
-            <fieldset id="config_files">
-                <legend>Config</label>
-                <input type='file' id='configfile' />
-                <button onclick="load_config()">Ladda</button>
-            </fieldset>
+        <div class="hidden dialog" id="edit_data_dialog">
+            <form id="edit_new_form">
+                <div class="close_x">
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <h1>Ändra</h1>
+                <label for="edit_data_name">Benämning</label>
+                <input type="text" id="edit_data_name" required >
+                
+                <label for="edit_data_plu">PLU</label>
+                <input type="text" id="edit_data_plu" required minlength=4 maxlength=13 pattern="\d{4,13}">
+                
+                <label for="edit_data_ean">EAN</label>
+                <input type="text" id="edit_data_ean" required minlength=13 maxlength=13 pattern="\d*">
+                
+
+                <label for="edit_image_url">URL</label>
+                <input type="text" id="edit_image_url">
+
+                <label for="edit_data_active_check">Aktiv</label>
+                <div class="container">
+                    <input type="checkbox"  id="edit_data_active_check" class="hidden_checkbox">
+                    <div class="custom_checkbox"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M10, 40 L 40, 90 C 65, 20 90, 10 100, 0"></path> <!-- x,y x,y ....-->
+                    </svg>
+
+                </div>
+
+                <input type="submit" value="Spara"></input>
+                <button>Rensa</button>
+            </form>
         </div>
-        -->
         <div id="items"></div>
         <footer id="command_row">
             <button id="load_data_btn">Ladda sortiment</button>
             <button id="printable_btn">Skriv ut</button>
-            <button id="save_data_btn">Spara</button>
+            <button id="save_data_btn">Spara fil</button>
             <button id="add_data_btn">Lägg till</button>
-            <!--<button onclick="show_settings_window()">Inställningar</button>-->
-
+            <button id="clear_selection">Rensa val</button>
         </footer>
         <div id="settings">
 

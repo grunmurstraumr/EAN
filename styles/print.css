@@ -5,6 +5,7 @@
     -webkit-transition: none !important;
     transition: none !important;
     min-width: 0 !important;
+    background-color: white;
   }
   @page {
     size: auto;
@@ -16,8 +17,9 @@
   }
   header {
     background-color: transparent;
+    background-image: none;
     position: static;
-    color: black;
+    color: black !important;
     font-size: 22pt;
   }
   .no-print {
@@ -34,6 +36,9 @@
     overflow: visible !important;
     padding-left: 2.5cm;
     padding: 25mm;
+  }
+  .edit_symbol {
+    display: none;
   }
   .item {
     font-family: 'Noto Sans JP', sans-serif;
@@ -98,6 +103,9 @@
             box-shadow: none;
   }
   .active:after {
+    display: none;
+  }
+  .fas {
     display: none;
   }
 }

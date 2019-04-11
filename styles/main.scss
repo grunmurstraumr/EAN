@@ -16,7 +16,7 @@ input, label{
 }
 body{
     min-height: 100vh;
-    padding: $header_height+20px 10vw 2vh 10vw;
+    padding: $header_height+20px 10vw;
 }
 
 header{
@@ -25,7 +25,7 @@ header{
     align-content: center;
     justify-content: center;
     padding-top: 7px;
-    z-index: 2;
+    z-index: 3;
     position: fixed;
     top: 0;
     left: 0;
@@ -39,6 +39,10 @@ header{
         color: $text-color;
         font-size: 22pt;
     }
+}
+
+footer{
+    z-index: 3;
 }
 
 #items{
@@ -68,15 +72,15 @@ header{
         font-size: 12pt;
         font-style: bold;
         height: 100%;
-        margin: 0 10px 0 10px;
+        width: 100px;
+        margin: 0px 10px 0px 10px;
         transition: filter 0.2s;
         padding: 3px 10px 3px 10px;
         font-family: 'Noto Sans JP', sans-serif;
         &:hover{
             border: 1px solid black;
-            margin: 0 9px 0 9px;
+            margin: 0 10px 0 10px;
             filter: brightness(200%);
-
             box-shadow: 2px 2px 2px black;
         }
     }
@@ -87,7 +91,7 @@ header{
     display: flex;
     flex-direction: column;
     margin: 3px;
-    padding: 10px;
+    padding: 17px 10px 10px 10px;
     width: 10vw;
     min-width: 200px;
     border: 2px solid black;
@@ -95,7 +99,7 @@ header{
     align-items: center;
     justify-content: flex-end;
     user-select: none;
-    overflow: hidden;
+    overflow: visible;
     h2{
         display: block; 
         width: 100%;
@@ -149,6 +153,11 @@ header{
             padding-top: 20px;
             font-size: 24pt;
         }
+        label{
+            font-size: 15px;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
         .container{
             position: relative;
             top: auto;
@@ -176,119 +185,67 @@ header{
                 }
             }
         }
-            button, input[type=submit]{
-                &:hover{
-                    filter: brightness(125%);
-                }
-            }
-
-            .custom_checkbox{
-                position: absolute;
-                top: 0;
-                display: block;;
-                border: solid 1px black;
-                border-radius: 5px;
-                padding: 0;
-                height: 30px;
-                width: 30px;
-                opacity: 1;
-                &:hover{
-                    filter: brightness(125%);
-                }
-            }
-            svg{
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 30px;
-                height: 30px;
-                stroke: red;
-                stroke-width: 12;
-                fill: transparent;
-                opacity: 0;
+        button, input[type=submit]{
+            width: 40%;
+            &:hover{
+                filter: brightness(125%);
             }
         }
-    #url_file_toggle{
-        position: absolute;
-        right: 0;
-        opacity: 0;
-        width: 60px;
-        height: 20px;
-        & ~ .custom_checkbox{
-            right: 0;
-        }
 
-        &:checked ~ #url_file_toggle_switch{
-            &::after{
-                transform: translate(40px);
+        .custom_checkbox{
+            position: absolute;
+            top: 0;
+            display: block;;
+            border: solid 1px black;
+            border-radius: 5px;
+            padding: 0;
+            height: 30px;
+            width: 30px;
+            opacity: 1;
+            &:hover{
+                filter: brightness(125%);
             }
-
         }
-        &:checked ~ #add_image_file_container{
-            display: none;
-        }
-        &:checked ~ #add_image_url_container{
-            display: block;
-        }
-    }
-    #add_image_url_container{
-        display: none;
-    }
-
-    #add_image_url, #add_image_file{
-        height: 50px;
-        width: 80%;
-    }
-    #url_file_toggle_switch, #url_file_toggle{
-        top: 80px;
-    }
-    #url_file_toggle_switch{
-        display: block;
-        position: absolute;
-        right: 0;
-        height: 20px;
-        width: 60px;
-        background-color: gray;
-        border: solid 1px black;
-        box-shadow: 1px 1px 2px black inset;
-        border-radius: 20px; 
-        &::after{
-            content: "";
-            display: block;
+        svg{
             position: absolute;
             top: 0;
             left: 0;
-            height: 19px;
-            width: 20px;
-            border-radius: 50%;
-            background-image: radial-gradient(white, darkgrey) ;
-            box-shadow: 1px 1px 5px black;
-            transition: transform 0.1s ease-out;
-            }
+            width: 30px;
+            height: 30px;
+            stroke: red;
+            stroke-width: 12;
+            fill: transparent;
+            opacity: 0;
         }
-    }
-        input{
-            margin: 5px;
-            padding: 5px;
-            display: inline-block;
-            width: 90%;
-            height: 40px;
-            border-radius: 5px;
-            
+    } // Dialog form end
 
-            &[type=button], &[type=file]{
-                height: 40px;
-                margin: 6px;
-                border-radius: 5px;
-                /*border: solid 1px black;*/
-            }
-        }
-        button{
-            height: 40px;
-            border-radius: 5px;
-            border: solid 1px darkgrey;
-            display: inline-block;
-        }
+} // Dialog end
+input{
+    margin: 5px;
+    padding: 5px;
+    display: inline-block;
+    width: 90%;
+    height: 40px;
+    border-radius: 5px;
+    
+    &[type=file]{
+        height: auto;
+    }
+    &[type=button]{
+        height: 40px;
+        margin: 6px;
+        border-radius: 5px;
+        /*border: solid 1px black;*/
+    }
+}
+button{
+    height: 40px;
+    border-radius: 5px;
+    border: solid 1px darkgrey;
+    display: inline-block;
+    width: 90%;
+    margin: 5px;
+}
     
 
 .active{
@@ -345,4 +302,37 @@ header{
 
     }
 
+}
+
+.fas{
+    opacity: 0.5;
+    z-index: 2;
+    color: black;
+    transition: color 0.2s, font-size 0.2s ease-in;
+    transition-delay: 0s;
+    &:hover{
+        background-color: rgba(95,95,95,0.6);
+        color: red;
+        margin: 0;
+        //border: solid 1px black;
+        border-radius: 50%;
+        opacity: 1;
+        font-size: 24pt;
+        transition-delay: 0.4s;
+    }
+}
+.edit_symbol{
+    position: absolute;
+    padding: 5px;
+    margin: 1px;
+    top: 0;
+    right: 0;
+}
+
+.remove_symbol{
+    position: absolute;
+    padding: 5px;
+    margin: 1px;
+    top: 0;
+    left: 0;
 }

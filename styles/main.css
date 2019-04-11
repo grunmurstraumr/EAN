@@ -12,7 +12,7 @@ input, label {
 
 body {
   min-height: 100vh;
-  padding: 80px 10vw 2vh 10vw;
+  padding: 80px 10vw;
 }
 
 header {
@@ -29,7 +29,7 @@ header {
       -ms-flex-pack: center;
           justify-content: center;
   padding-top: 7px;
-  z-index: 2;
+  z-index: 3;
   position: fixed;
   top: 0;
   left: 0;
@@ -45,6 +45,10 @@ header h1 {
   font-family: 'Noto Sans JP', sans-serif;
   color: #dddddd;
   font-size: 22pt;
+}
+
+footer {
+  z-index: 3;
 }
 
 #items {
@@ -87,7 +91,8 @@ header h1 {
   font-size: 12pt;
   font-style: bold;
   height: 100%;
-  margin: 0 10px 0 10px;
+  width: 100px;
+  margin: 0px 10px 0px 10px;
   -webkit-transition: -webkit-filter 0.2s;
   transition: -webkit-filter 0.2s;
   transition: filter 0.2s;
@@ -98,7 +103,7 @@ header h1 {
 
 #command_row button:hover {
   border: 1px solid black;
-  margin: 0 9px 0 9px;
+  margin: 0 10px 0 10px;
   -webkit-filter: brightness(200%);
           filter: brightness(200%);
   -webkit-box-shadow: 2px 2px 2px black;
@@ -116,7 +121,7 @@ header h1 {
       -ms-flex-direction: column;
           flex-direction: column;
   margin: 3px;
-  padding: 10px;
+  padding: 17px 10px 10px 10px;
   width: 10vw;
   min-width: 200px;
   border: 2px solid black;
@@ -131,7 +136,7 @@ header h1 {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .item h2 {
@@ -207,6 +212,12 @@ header h1 {
   font-size: 24pt;
 }
 
+.dialog form label {
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
 .dialog form .container {
   position: relative;
   top: auto;
@@ -237,6 +248,10 @@ header h1 {
 .dialog form .container input[type=checkbox]:hover ~ .custom_checkbox {
   -webkit-box-shadow: 0px 0px 5px blue;
           box-shadow: 0px 0px 5px blue;
+}
+
+.dialog form button, .dialog form input[type=submit] {
+  width: 40%;
 }
 
 .dialog form button:hover, .dialog form input[type=submit]:hover {
@@ -273,75 +288,6 @@ header h1 {
   opacity: 0;
 }
 
-.dialog #url_file_toggle {
-  position: absolute;
-  right: 0;
-  opacity: 0;
-  width: 60px;
-  height: 20px;
-}
-
-.dialog #url_file_toggle ~ .custom_checkbox {
-  right: 0;
-}
-
-.dialog #url_file_toggle:checked ~ #url_file_toggle_switch::after {
-  -webkit-transform: translate(40px);
-          transform: translate(40px);
-}
-
-.dialog #url_file_toggle:checked ~ #add_image_file_container {
-  display: none;
-}
-
-.dialog #url_file_toggle:checked ~ #add_image_url_container {
-  display: block;
-}
-
-.dialog #add_image_url_container {
-  display: none;
-}
-
-.dialog #add_image_url, .dialog #add_image_file {
-  height: 50px;
-  width: 80%;
-}
-
-.dialog #url_file_toggle_switch, .dialog #url_file_toggle {
-  top: 80px;
-}
-
-.dialog #url_file_toggle_switch {
-  display: block;
-  position: absolute;
-  right: 0;
-  height: 20px;
-  width: 60px;
-  background-color: gray;
-  border: solid 1px black;
-  -webkit-box-shadow: 1px 1px 2px black inset;
-          box-shadow: 1px 1px 2px black inset;
-  border-radius: 20px;
-}
-
-.dialog #url_file_toggle_switch::after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 19px;
-  width: 20px;
-  border-radius: 50%;
-  background-image: radial-gradient(white, darkgrey);
-  -webkit-box-shadow: 1px 1px 5px black;
-          box-shadow: 1px 1px 5px black;
-  -webkit-transition: -webkit-transform 0.1s ease-out;
-  transition: -webkit-transform 0.1s ease-out;
-  transition: transform 0.1s ease-out;
-  transition: transform 0.1s ease-out, -webkit-transform 0.1s ease-out;
-}
-
 input {
   margin: 5px;
   padding: 5px;
@@ -351,7 +297,11 @@ input {
   border-radius: 5px;
 }
 
-input[type=button], input[type=file] {
+input[type=file] {
+  height: auto;
+}
+
+input[type=button] {
   height: 40px;
   margin: 6px;
   border-radius: 5px;
@@ -363,6 +313,8 @@ button {
   border-radius: 5px;
   border: solid 1px darkgrey;
   display: inline-block;
+  width: 90%;
+  margin: 5px;
 }
 
 .active {
@@ -432,5 +384,42 @@ button {
 .close_x :last-child {
   -webkit-transform: rotate(-45deg);
           transform: rotate(-45deg);
+}
+
+.fas {
+  opacity: 0.5;
+  z-index: 2;
+  color: black;
+  -webkit-transition: color 0.2s, font-size 0.2s ease-in;
+  transition: color 0.2s, font-size 0.2s ease-in;
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+}
+
+.fas:hover {
+  background-color: rgba(95, 95, 95, 0.6);
+  color: red;
+  margin: 0;
+  border-radius: 50%;
+  opacity: 1;
+  font-size: 24pt;
+  -webkit-transition-delay: 0.4s;
+          transition-delay: 0.4s;
+}
+
+.edit_symbol {
+  position: absolute;
+  padding: 5px;
+  margin: 1px;
+  top: 0;
+  right: 0;
+}
+
+.remove_symbol {
+  position: absolute;
+  padding: 5px;
+  margin: 1px;
+  top: 0;
+  left: 0;
 }
 /*# sourceMappingURL=main.css.map */

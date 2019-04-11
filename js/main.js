@@ -10,21 +10,41 @@ class DataContainer{
         this.data = [];
     }
     push(param){
-        //assume param is of type Entry
+        // assume param is of type Entry
         // Check if item is already stored
-        if(this.data.filter(element => {element.ean === param.ean}).length === 0){
+        // If item already exists update with new information
+        let item = this.find(param.plu, 'plu');
+        if (item !== undefined){
+            //First remove from parent
+            try{
+            let parent = item.node.parentNode;
+            parent.removeChild(item);
+            
+            console.log(item);
+            }
+            catch(error){
+                console.error(`Item ${item.name} is already stored in data but has no html node. Skip this part.`)
+            }
+            finally{
+                item = param;
+                item.generate_id;
+            }
+        }
+        else{
             this.data.push(param);
         }
-        else
-            throw "Item already exists";
+           
     }
     sort(){
-        this.data.sort((a,b)=>{
+        this.data = this.data.sort((a,b)=>{
             // Sort by name
-            if (a.name > b.name)
+            if (a.name.toLowerCase() > b.name.toLowerCase())
                 return 1
             else
                 return -1
+        })
+        this.data.forEach((item, index) =>{
+            item.index = index;
         })
     }
     find(value, key){
@@ -32,6 +52,25 @@ class DataContainer{
         return this.data.find((element) =>{
             return element[key].trim() === value.trim()
         });
+    }
+    exists(value, key){
+        // Returns true if object exists
+        if (this.data.find(element => {
+            return element[key].trim() === value.trim()
+        })){
+            return true;
+        }
+        else
+            return false;
+
+    }
+    remove(value, key){
+
+        let item = this.data.splice(this.data.findIndex(element =>{
+            //console.log(`Comparing ${element[key]} and ${value}`);
+            return element[key].trim() === value.trim()
+        }),1)[0];
+        item.remove_from_html();
     }
     get length(){
         return this.data.length;
@@ -63,34 +102,24 @@ class Entry{
         else
             this.active = false;
         this.changed = true; //Flag to detect if redrawing would be necessary
-        this.id = name.replace(/[\s\/]/g, '-'); // Replace spaces with hyphens
-        this.node;
+        this.html_id = this.generate_id(name); // Replace spaces with hyphens
+        this.node = undefined;
+        this.index = 0;
 
     }
     fields(){
         //Return an array with the data fields
         return [this.name, this.plu, this.ean, this.image, this.active];
     }
-
-    edit(property, value){
-        changed = true;
-        if (property === 'name' || property ==='id'){
-            this.old_id = this.id;
-        }
-        try{
-            this[property] = value
-            if (property === 'name'){
-                
-            }
-        }
-        catch(error){
-            console.error(`${property} is an unknown property.`);
-        }
-
+    generate_id(param){
+        return param.replace(/[\s\/]/g, '-')
     }
-    toHtml(parent){
-        // If nothing is changed just skip the entire function.
-    
+    remove_from_html(){
+        if (this.node){
+            this.node.parentNode.removeChild(this.node);
+        }
+    }
+    toHtml(parent){    
         if (this.node)
             parent.removeChild(this.node);
 
@@ -100,27 +129,54 @@ class Entry{
             html.classList.add('active');
         let img = document.createElement('img');
         img = assign_image(this.image);
+        let edit_symbol = document.createElement('i');
+        edit_symbol.title = "Ändra"; // This is automagically showns as a tooltip
+        edit_symbol.classList.add('fas', 'fa-tools', 'edit_symbol');
+        edit_symbol.addEventListener('click', event => {
+            show_dialog('edit_data_dialog');
+            initialize_edit_form(this);
+            // Following is basically a hack since the click event
+            // on the whole item div toggles active, this undoes that
+            // in a very inefficient and not very 
+            this.active = !this.active;
+            html.classList.toggle('active');
+        });
+        let delete_symbol = document.createElement('i');
+        delete_symbol.title = "Ta bort"; // This is automagically showns as a tooltip
+        delete_symbol.classList.add('fas', 'fa-trash-alt', 'remove_symbol');
+        delete_symbol.addEventListener('click', event =>{
+            if (confirm(`Vill du verkligen radera ${this.name}?`))
+                data.remove(this.plu, 'plu');
+            // If item is not removed untoggle active states
+            this.node.classList.toggle('active');
+            this.active = !this.active;
+        })
         html.innerHTML = `
             <h2> ${this.name} </h2>
             <p> ${this.plu}</p>
             `
         let canvas = document.createElement('canvas');
-        canvas.id = `${this.id}_barcode`;
+        canvas.id = `${this.html_id}_barcode`;
+        html.appendChild(edit_symbol);
+        html.appendChild(delete_symbol);
         html.appendChild(img);
         html.appendChild(canvas);
         html.addEventListener('click', () => {
             html.classList.toggle('active');
             this.active = !this.active; //Toggle true/false for active 'flag'
         });
+        html.querySelector('i')
         parent.appendChild(html);
-        JsBarcode(`#${this.id}_barcode`, this.ean, {
+        JsBarcode(`#${this.html_id}_barcode`, this.ean, {
             height: settings['jsbarcode-height'],
             width: settings['jsbarcode-width'],
             displayValue: settings['display-value'],
         });
         this.node = html;
+        this.node.style.order = this.index;
         this.changed = false;
     }
+
 }
 /*************************************************************************
 * Settings
@@ -149,11 +205,9 @@ const settings = {
     'card-padding': 2.5,
     'page-margin': 25,
     'filename': 'Självscanningskoder',
-    'file-ending': '.pdf',
+    'file-ending': '.csv',
     'csv-separator': ';',
-    'proxy': "https://cors-anywhere.herokuapp.com/",
-    'font-conversion-factor': 0.353, // 1/72 inch in millimeter
-    'default-save-filename': 'streckkodslista.csv',
+    'default-save-filename': 'streckkodslista',
 }
 settings['card-height'] = 2*settings['card-padding']+settings['barcode-height'] + settings['image-height']+ 2*settings['text-line-height'];
 
@@ -174,6 +228,35 @@ const add_new = () =>{
     data.sort();
     renderAll();
     form.reset();
+}
+
+const edit_item = (id) =>{
+    let item = data.find(id, 'plu');
+    let form = document.querySelector('#edit_data_dialog form');
+    item.name = form['edit_data_name'].value;
+    item.plu = form['edit_data_plu'].value;
+    item.ean = form['edit_data_ean'].value;
+    item.image = form['edit_image_url'].value;
+    item.active = form['edit_data_active_check'].checked;
+    data.sort();
+    let root_node = document.querySelector('#items');
+    item.toHtml(root_node);
+}
+
+
+const initialize_edit_form = (entry) => {
+    let form = document.querySelector('#edit_data_dialog form');
+    form['edit_data_name'].value = entry.name;
+    form['edit_data_plu'].value = entry.plu;
+    form['edit_data_ean'].value = entry.ean;
+    form['edit_image_url'].value = entry.image;
+    form['edit_data_active_check'].checked = entry.active;
+    form.onsubmit = (event) => {
+        event.preventDefault();
+        edit_item(entry.plu);
+        close_top_window();
+        return false;
+    }
 }
 
 const assign_image = (URL) =>{
@@ -204,6 +287,7 @@ function load_data(){
                 entries[i].push('false')
             let [name, plu, image_url, ean, active] = entries[i];
             if (name && plu && ean)
+
                 data.push(new Entry( name, plu, image_url, ean, active));
         }
         data.sort();
@@ -237,7 +321,6 @@ const clear_all = () =>{
 }
 
 let save_data = () =>{
-    // Use a data-URI anchor to create a downloadable file
     let format_csv = (str_arr) => {
         output = "";
         for (let value of str_arr){
@@ -248,33 +331,25 @@ let save_data = () =>{
     // Set up download anchor
     var download_anchor = document.createElement('a');
     download_anchor.style.display = 'none';
-    // Get active items from html
-    let data_items = Array.from(document.querySelectorAll('.item'));
-
-    for (let i = 0; i < data_items.length; ++i){
-        data_items[i] = get_fields_from_html(data_items[i]);
-    }
-    //data_items.map(get_fields_from_html);
-    
     let output = "";
-    for (let item of data_items){
-        output += `${format_csv(item)}\n`
+    for (let i = 0; i < data.length; ++i){
+        output += `${format_csv(data.getIndex(i).fields())}\n`
     }
+    let timestamp = new Date();
+
     download_anchor.setAttribute('href', 'data:text/plain;encoding=utf-8,' + encodeURIComponent(output));//'data:application/octet-stream,' + encodeURIComponent(output));
-    download_anchor.setAttribute('download', settings['default-save-filename']);
+    download_anchor.setAttribute('download', `${settings['default-save-filename']}_${Date.now()}${settings['file-ending']}` );
     document.body.appendChild(download_anchor);
     download_anchor.click();
     document.body.removeChild(download_anchor);
     
 }
 
-
-
 let get_fields_from_html = (item) => {
     //Returns an array with the data fetched from the html
     // [name, plu, ean, image_url, active]
     let search_key = item.querySelector('p').innerHTML.trim() // Search on plu, not name, Very hacky solution. Needs refactoring
-    let data_item = find_data(search_key, 'plu');
+    let data_item = find(search_key, 'plu');
     return data_item.fields();
 }
 
@@ -289,7 +364,6 @@ const show_dialog = dialog_id => {
     window_stack.push(dialog);
     dialog.classList.remove('hidden');
     dialog.focus();
-
 }
 const close_top_window = () => {
     let current = window_stack.pop();
@@ -338,7 +412,8 @@ const strToBool = str => {
 const handle_key_press = (event) =>{
     if(event.key === 'Escape'){
         event.preventDefault();
-        close_top_window();
+        if (window_stack.length > 0)
+            close_top_window();
     }
 }
 
@@ -366,17 +441,25 @@ const setup_event_listeners = ()=>{
     document.querySelector('#add_data_btn').addEventListener('click', () =>{
         show_dialog('add_data_dialog');
     });
-
+    document.querySelector('#clear_selection').addEventListener('click', () =>{
+        let selected = document.querySelectorAll('.active');
+        selected.forEach(element =>{
+            element.classList.remove('active');
+            let data_item = data.getIndex(element.style.order);
+            data_item.active = !data_item.active;
+        })
+    })
     document.querySelector('#add_data_dialog form ').addEventListener('submit', (event) => {
         event.preventDefault();
         add_new();
+        close_top_window();
     });
+
     document.querySelectorAll('.close_x').forEach( (element) => {
         element.addEventListener('click', () =>{
             close_top_window();
         });
     });
-
 }   
 document.addEventListener('DOMContentLoaded', () => {
     setup_event_listeners();

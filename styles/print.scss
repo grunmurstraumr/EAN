@@ -13,6 +13,7 @@
         padding: 0 !important;
         transition: none !important;
         min-width: 0 !important;
+        background-color: white;
     }
     @page{
         size: auto;
@@ -25,8 +26,9 @@
     }
     header{
         background-color: transparent;
+        background-image: none;
         position: static;
-        color: black;
+        color: black !important;
         font-size: 22pt;
     }
 
@@ -46,6 +48,9 @@
         overflow: visible !important;
         padding-left: $page_margin_l;
         padding: 25mm;
+    }
+    .edit_symbol{
+        display: none;
     }
     .item{
         font-family: 'Noto Sans JP', sans-serif;
@@ -104,6 +109,8 @@
             display: none;
         }
     }
-
+    .fas{
+        display:none;
+    }
 }
 
