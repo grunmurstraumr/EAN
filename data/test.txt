@@ -1,3 +1,0 @@
-teststring; a; b
-rad 2
-rad 3

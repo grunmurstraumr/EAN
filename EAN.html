@@ -13,11 +13,6 @@
         <header>
             <h1>Självscanningskoder</h1>
         </header>
-        <div class="filter_menu" id="filter_menu">
-            <ul>
-                <li></li>
-            </ul>
-        </div>
         <div class="hidden dialog" id="data_file_dialog">
             <form id="data_files">
                 <div class="close_x">
@@ -41,14 +36,18 @@
                 <label for="add_data_name">Benämning</label>
                 <input type="text" id="add_data_name" required >
                 
+                
                 <label for="add_data_plu">PLU</label>
                 <input type="text" id="add_data_plu" required minlength=4 maxlength=13 pattern="\d{4,13}">
                 
+                
                 <label for="add_data_ean">EAN</label>
                 <input type="text" id="add_data_ean" required minlength=13 maxlength=13 pattern="\d*">
-
+                <i id="add_barcode_symbol" title="Generera streckkod" class="fas fa-barcode generate_barcode_symbol"></i>
                 <label for="add_image_url">Bild URL</label>
                 <input type="text" id="add_image_url">
+                <img id="add_dialog_img_preview" class="img_preview">
+
                 
                 <label for="add_data_active_check">Aktiv</label>
                 <div class="container">
@@ -61,7 +60,7 @@
                 </div>
 
                 <input type="submit" value="Spara"></input>
-                <button>Rensa</button>
+                <button id="clear_add_button">Rensa</button>
             </form>
         </div>
         <div class="hidden dialog" id="edit_data_dialog">
@@ -80,10 +79,12 @@
                 
                 <label for="edit_data_ean">EAN</label>
                 <input type="text" id="edit_data_ean" required minlength=13 maxlength=13 pattern="\d*">
+                <i id="edit_barcode_symbol" title="Generera streckkod" class="fas fa-barcode generate_barcode_symbol"></i>
                 
 
                 <label for="edit_image_url">URL</label>
                 <input type="text" id="edit_image_url">
+                <img id="edit_dialog_img_preview" class="img_preview">
 
                 <label for="edit_data_active_check">Aktiv</label>
                 <div class="container">
@@ -96,7 +97,6 @@
                 </div>
 
                 <input type="submit" value="Spara"></input>
-                <button>Rensa</button>
             </form>
         </div>
         <div id="items"></div>

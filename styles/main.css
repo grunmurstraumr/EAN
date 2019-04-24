@@ -205,6 +205,7 @@ footer {
       align-content: space-between;
   -webkit-box-shadow: 3px 3px 5px black;
           box-shadow: 3px 3px 5px black;
+  min-width: 500px;
 }
 
 .dialog form legend {
@@ -251,6 +252,11 @@ footer {
 }
 
 .dialog form button, .dialog form input[type=submit] {
+  display: inline-block;
+  border: none;
+  border: solid 1px darkgrey;
+  -webkit-box-shadow: 2px 2px 2px grey;
+          box-shadow: 2px 2px 2px grey;
   width: 40%;
 }
 
@@ -288,6 +294,16 @@ footer {
   opacity: 0;
 }
 
+.img_preview {
+  position: relative;
+  margin: 0 auto;
+  float: right;
+  width: 200px;
+  height: 200px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 input {
   margin: 5px;
   padding: 5px;
@@ -311,7 +327,6 @@ input[type=button] {
 button {
   height: 40px;
   border-radius: 5px;
-  border: solid 1px darkgrey;
   display: inline-block;
   width: 90%;
   margin: 5px;
@@ -346,7 +361,7 @@ button {
   display: -ms-flexbox;
   display: flex;
   position: absolute;
-  top: 30px;
+  top: 10px;
   right: 10px;
   height: 20px;
   width: 20px;
@@ -386,7 +401,7 @@ button {
           transform: rotate(-45deg);
 }
 
-.fas {
+.item_symbol {
   opacity: 0.5;
   z-index: 2;
   color: black;
@@ -396,7 +411,7 @@ button {
           transition-delay: 0s;
 }
 
-.fas:hover {
+.item_symbol:hover {
   background-color: rgba(95, 95, 95, 0.6);
   color: red;
   margin: 0;
@@ -421,5 +436,20 @@ button {
   margin: 1px;
   top: 0;
   left: 0;
+}
+
+.generate_barcode_symbol {
+  z-index: 99;
+  position: relative;
+  top: -33px;
+  left: 85%;
+  color: black;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+
+.generate_barcode_symbol:hover {
+  opacity: 1;
 }
 /*# sourceMappingURL=main.css.map */

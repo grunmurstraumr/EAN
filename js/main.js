@@ -1,6 +1,14 @@
 /*************************************************************************
 * Class definitions
 *************************************************************************/
+class DialogComponent{
+    constructor(id, tag, type, parent){
+        this.id = id;
+        this.tag = tag;
+        this.type = type;
+        this.parent = parent;
+    }
+}
 class DataContainer{
     // The dataContainer is a thin wrapper around an array to provide some additional functionality
     // for the purposes of this application. 
@@ -131,7 +139,7 @@ class Entry{
         img = assign_image(this.image);
         let edit_symbol = document.createElement('i');
         edit_symbol.title = "Ändra"; // This is automagically showns as a tooltip
-        edit_symbol.classList.add('fas', 'fa-tools', 'edit_symbol');
+        edit_symbol.classList.add('fas', 'fa-tools', 'edit_symbol', 'item_symbol');
         edit_symbol.addEventListener('click', event => {
             show_dialog('edit_data_dialog');
             initialize_edit_form(this);
@@ -143,7 +151,7 @@ class Entry{
         });
         let delete_symbol = document.createElement('i');
         delete_symbol.title = "Ta bort"; // This is automagically showns as a tooltip
-        delete_symbol.classList.add('fas', 'fa-trash-alt', 'remove_symbol');
+        delete_symbol.classList.add('fas', 'fa-trash-alt', 'remove_symbol', 'item_symbol');
         delete_symbol.addEventListener('click', event =>{
             if (confirm(`Vill du verkligen radera ${this.name}?`))
                 data.remove(this.plu, 'plu');
@@ -251,6 +259,7 @@ const initialize_edit_form = (entry) => {
     form['edit_data_ean'].value = entry.ean;
     form['edit_image_url'].value = entry.image;
     form['edit_data_active_check'].checked = entry.active;
+    form['edit_dialog_img_preview'].src = entry.image;
     form.onsubmit = (event) => {
         event.preventDefault();
         edit_item(entry.plu);
@@ -405,7 +414,19 @@ const strToBool = str => {
     return truthy.indexOf(str.toLowerCase()) !== -1;
 }
 
+const generate_barcode = input => {
+    if (input.length === 4)
+        return `2092${input}00000`;
 
+    else if (input.length === 5 && input[0] === '9')
+        return `2098${input.slice(1)}00000`;
+
+    else if(input.length === 13){
+        return input;
+    }
+    else
+        return "";
+}
 /*************************************************************************
 * Event handlers
 *************************************************************************/
@@ -460,6 +481,31 @@ const setup_event_listeners = ()=>{
             close_top_window();
         });
     });
+    document.querySelector('#add_image_url').addEventListener('change',(event) => {
+        let img_preview = document.querySelector('#add_dialog_img_preview');
+        img_preview.src = event.target.value;
+    });
+    
+    document.querySelector('#edit_image_url').addEventListener('change',(event) => {
+        let img_preview = document.querySelector('#edit_dialog_img_preview');
+        img_preview.src = event.target.value;
+    });
+
+    document.querySelector('#clear_add_button').addEventListener('click', event =>{
+        event.target.parentNode.reset();
+        event.preventDefault();
+    })
+    document.querySelector('#add_barcode_symbol').addEventListener('click', event => {
+        let ean_input = event.target.parentNode['add_data_ean'];
+        let plu_input = event.target.parentNode['add_data_plu'];
+        ean_input.value = generate_barcode(plu_input.value);
+    });
+    document.querySelector('#edit_barcode_symbol').addEventListener('click', event => {
+        let ean_input = event.target.parentNode['edit_data_ean'];
+        let plu_input = event.target.parentNode['edit_data_plu'];
+        ean_input.value = generate_barcode(plu_input.value);
+    });
+
 }   
 document.addEventListener('DOMContentLoaded', () => {
     setup_event_listeners();
