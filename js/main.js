@@ -175,7 +175,12 @@ class Entry{
         });
         html.querySelector('i')
         parent.appendChild(html);
-        JsBarcode(`#${this.html_id}_barcode`, this.ean, {
+        let print_ean = this.ean;
+        if (print_ean.length == 13){
+            print_ean = print_ean.substring(0,12);
+        }
+        JsBarcode(`#${this.html_id}_barcode`, print_ean, {
+            format: 'EAN13',
             height: settings['jsbarcode-height'],
             width: settings['jsbarcode-width'],
             displayValue: settings['display-value'],
