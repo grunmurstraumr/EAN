@@ -423,9 +423,14 @@ const generate_barcode = input => {
     if (input.length === 4)
         return `2092${input}00000`;
 
-    else if (input.length === 5 && input[0] === '9')
-        return `2098${input.slice(1)}00000`;
-
+    else if (input.length === 5){
+        if (input[0] === '9'){
+            return `2098${input.slice(1)}00000`;
+        }
+        else{
+            return `209${input}00000`;
+        }
+    }
     else if(input.length === 13){
         return input;
     }
