@@ -9,7 +9,7 @@
   }
   @page {
     size: auto;
-    margin: 25mm;
+    margin: auto;
   }
   body {
     overflow: visible !important;
@@ -20,7 +20,7 @@
     background-image: none;
     position: static;
     color: black !important;
-    font-size: 22pt;
+    font-size: 16pt;
   }
   .no-print {
     display: none !important;
@@ -32,10 +32,11 @@
     display: none !important;
   }
   #items {
-    display: inline;
+    display: block;
     overflow: visible !important;
     padding-left: 2.5cm;
     padding: 25mm;
+    height: 95vh;
   }
   .edit_symbol {
     display: none;
@@ -45,57 +46,47 @@
     color: black;
     position: relative;
     display: inline-block;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    border: 2px solid black;
+    border: 100% solid black;
     text-align: center;
-    page-break-inside: avoid;
+    page-break-before: avoid;
     min-width: 0;
-    width: calc((210mm - 2.5cm - 2.5cm)/4);
-    height: calc((297mm - 2.5cm - 2.5cm)/5);
+    width: 25%;
+    height: calc(94%/5);
     padding-bottom: 1cm;
+    margin-right: 100%;
   }
   .item h2 {
     position: absolute;
     top: 0mm;
     display: block;
-    -webkit-box-flex: 2;
-        -ms-flex-positive: 2;
-            flex-grow: 2;
-    font-size: 12pt;
+    font-size: 100%;
   }
   .item p {
     display: block;
     width: 100%;
     text-align: center;
-    font-size: 10pt;
+    font-size: 90%;
     position: absolute;
-    top: calc(4mm + 20pt);
+    top: calc(4mm + 10pt);
+    z-index: 10;
   }
   .item img {
     position: absolute;
-    top: calc(5mm + 30pt);
+    top: calc(5mm + 18pt);
     -o-object-fit: contain;
        object-fit: contain;
-    left: 9mm;
+    left: 25%;
     width: 50%;
     height: auto;
     margin: 0 auto;
+    z-index: 0;
   }
   .item canvas {
     position: absolute;
     bottom: 2mm;
     left: 2mm;
     width: 90%;
-    height: 32pt;
+    height: 25%;
     margin: 0 auto;
   }
   .active {
