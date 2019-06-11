@@ -252,8 +252,9 @@ const edit_item = (id) =>{
     item.image = form['edit_image_url'].value;
     item.active = form['edit_data_active_check'].checked;
     data.sort();
-    let root_node = document.querySelector('#items');
-    item.toHtml(root_node);
+    //let root_node = document.querySelector('#items');
+    renderAll();
+    //item.toHtml(root_node);
 }
 
 
